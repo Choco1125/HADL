@@ -9,6 +9,7 @@
     <?php foreach ($this->styles as $css) { ?>
     		<link rel="stylesheet" href="<?php echo constant('URL')?>/public/css/<?php echo $css ?>">
     <?php	}	?>
+    
 </head>
 <body>
 	

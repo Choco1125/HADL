@@ -84,4 +84,51 @@
                 ];
             }
         }
+
+        public function buscar_informacion(){
+            try {
+                $consulta = 'SELECT nombre,descripcion,precio FROM servicio WHERE id = :id';
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    'id' => $this->id
+                ]);
+
+
+                while ($row = $sql->fetch(PDO::FETCH_OBJ)) {
+                    $this->nombre = $row->nombre;
+                    $this->descripcion = $row->descripcion;
+                    $this->precio = $row->precio;
+                }
+
+                return ['ok'];
+
+            } catch (PDOException $ex) {
+                return[
+                    'error'=>$ex
+                ];
+            }
+        }
+
+        public function actualizar(){
+            try {
+                $consulta = "UPDATE servicio SET nombre = :nombre,descripcion = :descripcion, precio = :precio WHERE id = :id";
+
+                $sql = $this->db_connection->prepare($consulta);
+                
+                $sql->execute([
+                    'nombre' => $this->nombre,
+                    'descripcion' => $this->descripcion,
+                    'precio' => $this->precio,
+                    'id'=>$this->id
+                ]);
+
+                
+                return ['ok'];
+
+            } catch (PDOException $ex) {
+                return [
+                    'error'=> $ex->errorInfo
+                ];
+            }
+        }
     }

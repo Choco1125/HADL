@@ -33,9 +33,9 @@
                         <button class="btn btn-outline-danger btn-sm" data-id="<?php echo $servicio->id?>" data-toggle="modal" data-target="#eliminar">
                             <i class="fa fa-trash"></i>
                         </button>
-                        <button class="btn btn-outline-primary btn-sm">
+                        <a class="btn btn-outline-primary btn-sm" href="<?php echo URL?>/servicios/editar_servicio/<?php echo $servicio->id?>">
                             <i class="fas fa-edit"></i>
-                        </button>
+                        </a>
                     </td>
                 </tr>
         <?php    

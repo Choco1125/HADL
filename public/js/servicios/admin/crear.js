@@ -20,9 +20,9 @@ function agregarFila(id, nombre,descripcion,precio) {
         <button class="btn btn-outline-danger btn-sm" data-id="${id}" data-toggle="modal" data-target="#eliminar">
             <i class="fa fa-trash"></i>
         </button>
-        <button class="btn btn-outline-primary btn-sm">
+        <a class="btn btn-outline-primary btn-sm" href="${appLinkDomain}/servicios/editar_servicio/${id}">
             <i class="fas fa-edit"></i>
-        </button>
+        </a>
     </td>
     `;
     tbl.appendChild(tr);
