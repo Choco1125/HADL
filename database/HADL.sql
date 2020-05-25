@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 24-05-2020 a las 21:12:35
+-- Tiempo de generación: 25-05-2020 a las 06:09:40
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -21,6 +21,19 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `HADL`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `servicio`
+--
+
+CREATE TABLE `servicio` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(100) COLLATE utf8_bin NOT NULL,
+  `descripcion` text COLLATE utf8_bin DEFAULT NULL,
+  `precio` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
@@ -47,6 +60,12 @@ INSERT INTO `usuario` (`id`, `email`, `password`, `rol`) VALUES
 --
 
 --
+-- Indices de la tabla `servicio`
+--
+ALTER TABLE `servicio`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
@@ -56,6 +75,12 @@ ALTER TABLE `usuario`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `servicio`
+--
+ALTER TABLE `servicio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`

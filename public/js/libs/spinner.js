@@ -7,7 +7,6 @@ const Spinner = {
     },
     start: function(id){
         let elemento = document.getElementById(id);
-        console.log(elemento)
         elemento.setAttribute('disabled','');
         elemento.appendChild(this.create());
     },
