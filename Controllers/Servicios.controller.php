@@ -20,6 +20,8 @@
                 'libs/erro.js',
                 'libs/peticiones.js',
                 'libs/spinner.js',
+                'libs/alerta.js',
+                'servicios/admin/main.js',
                 'servicios/admin/crear.js',
             ];
             $this->view->render('admin/servicios/catalogo');
@@ -96,6 +98,26 @@
                 echo json_encode([
                     'status' => 400,
                     'error'=> $errores
+                ]);
+            }
+        }
+
+        public function eliminar_servicio(){
+            $id = $_POST['id'];
+
+            $this->load_model('Servicio');
+            $servicio = new Servicio();
+            $servicio->set_id($id);
+
+            $eliminar = $servicio->eliminar();
+            if($eliminar == ['ok']){
+                echo json_encode([
+                    'status' => 200
+                ]);
+            }else{
+                echo json_encode([
+                    'status' => 400,
+                    'error'=>$eliminar['error']
                 ]);
             }
         }

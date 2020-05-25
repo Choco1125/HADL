@@ -11,7 +11,7 @@
         <button class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#crear">Crear servicio</a>
     </div>
     <div class="row mt-2 mb-3">
-        <table class="table table-hover">
+        <table class="table table-hover text-center">
             <thead>
                 <tr>
                     <th scope="col">Nombre</th>
@@ -25,11 +25,18 @@
             if(!is_null($this->catalogo)){
                 foreach ($this->catalogo as $servicio) {
         ?>
-                <tr>
+                <tr id="<?php echo $servicio->id?>">
                     <td><?php echo $servicio->nombre; ?></td>
                     <td><?php echo $servicio->descripcion; ?></td>
                     <td><?php echo $servicio->precio; ?></td>
-                    <td><?php echo $servicio->id; ?></td>
+                    <td>
+                        <button class="btn btn-outline-danger btn-sm" data-id="<?php echo $servicio->id?>" data-toggle="modal" data-target="#eliminar">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </td>
                 </tr>
         <?php    
                 }        
@@ -42,5 +49,6 @@
 
 <?php
     require 'views/admin/servicios/servicio/crear.php';
+    require 'views/admin/servicios/servicio/eliminar.php';
     require 'views/layout/foot.php';
 ?>

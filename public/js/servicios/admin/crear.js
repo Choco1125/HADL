@@ -8,13 +8,25 @@ let tbl = document.getElementById('tbl');
 
 function agregarFila(id, nombre,descripcion,precio) {
     let tr = document.createElement('tr');
-    let valores = [nombre,descripcion,precio,id];
+    tr.id = id;
+    let valores = [nombre,descripcion,precio];
     for (let i = 0; i < valores.length; i++) {
         let td = document.createElement('td');
         td.innerHTML = valores[i];
         tr.appendChild(td);
     }
+    tr.innerHTML+= `
+    <td>
+        <button class="btn btn-outline-danger btn-sm" data-id="${id}" data-toggle="modal" data-target="#eliminar">
+            <i class="fa fa-trash"></i>
+        </button>
+        <button class="btn btn-outline-primary btn-sm">
+            <i class="fas fa-edit"></i>
+        </button>
+    </td>
+    `;
     tbl.appendChild(tr);
+    setListener();
 }
 
 btn.addEventListener('click',async ()=>{

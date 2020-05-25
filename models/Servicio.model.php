@@ -65,4 +65,23 @@
                 ];
             }
         }
+
+        public function eliminar(){
+            try {
+                $consulta = "DELETE FROM servicio WHERE id = :id";
+
+                $sql = $this->db_connection->prepare($consulta);
+                
+                $sql->execute([
+                    'id' => $this->id
+                ]);
+
+                return ['ok'];
+
+            } catch (PDOException $ex) {
+                return [
+                    'error'=> $ex->errorInfo
+                ];
+            }
+        }
     }
