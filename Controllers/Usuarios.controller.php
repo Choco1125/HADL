@@ -7,6 +7,10 @@
         }
 
         public function render(){
+            $this->load_model('Usuario');
+
+            $usuarios = new Usuario();
+            $this->view->usuarios = $usuarios->seleccionar_todos();
             $this->view->render('admin/usuario/index');
         }
 
