@@ -10,6 +10,26 @@
             $this->view->render('admin/servicios/solicitud');
         }
 
+        //Solicitudes----------------------------------------
+      
+
+        public function solicitud(){
+            $this->view->render('admin/servicios/solicitud');
+        }
+
+        public function nueva_solicitud(){
+            $this->view->scripts = [
+                'libs/peticiones.js',
+                'libs/alerta.js',
+                'servicios/solicitud/crear.js'
+            ];
+            $this->view->render('admin/servicios/solicitud/crear');
+        }
+
+        //----------------------------------------------------------
+
+        //Servicios--------------------------------------------------
+
         public function catalogo(){
             $this->load_model('Servicio');
 
@@ -27,8 +47,22 @@
             $this->view->render('admin/servicios/catalogo');
         }
 
-        public function solicitud(){
-            $this->view->render('admin/servicios/solicitud');
+        public function todos_servicios(){
+            $this->load_model('Servicio');
+            $servicio = new Servicio();
+            $datos = $servicio->seleccionar_todos();
+
+
+            if(isset($datos)){
+                echo json_encode([
+                    'status' => 200,
+                    'datos' => $datos
+                ]);
+            }else{
+                echo json_encode([
+                    'status' => 400
+                ]);
+            }
         }
 
         public function crear_servicio(){
@@ -209,4 +243,5 @@
                 ]);
             }
         }
+        //---------------------------------------------------------------------
     }
