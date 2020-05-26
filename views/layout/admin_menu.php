@@ -9,10 +9,16 @@
         <a class="nav-link" href="<?php echo URL?>/">Inico</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo URL?>/">Features</a>
-      </li>
-      <li class="nav-item">
         <a class="nav-link" href="<?php echo URL?>/">Pricing</a>
+      </li>
+      <li class="nav-item dropdown <?php echo ($this->active == 'usuario')?'active':'' ?>">
+        <a class="nav-link dropdown-toggle" href="<?php echo URL?>/" id="dropdownSolicitudes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Usuario
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownSolicitudes">
+          <a class="dropdown-item" href="<?php echo URL?>/usuario/crear">Crear</a>
+          <a class="dropdown-item" href="<?php echo URL?>/usuario">Listar</a>
+        </div>
       </li>
       <li class="nav-item dropdown <?php echo ($this->active == 'servicios')?'active':'' ?>">
         <a class="nav-link dropdown-toggle" href="<?php echo URL?>/" id="dropdownSolicitudes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

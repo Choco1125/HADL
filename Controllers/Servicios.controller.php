@@ -18,6 +18,7 @@
         }
 
         public function nueva_solicitud(){
+            
             $this->view->scripts = [
                 'libs/peticiones.js',
                 'libs/alerta.js',
