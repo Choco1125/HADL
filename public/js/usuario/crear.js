@@ -29,19 +29,20 @@ crear.addEventListener('click',async ()=>{
     formData.append('nit',nit.value);
     formData.append('celular',celular.value);
     formData.append('direccion',direccion.value);
-
-    let res =await consumidor.post('usuario','nuevo',formData);
-
+    Spinner.start('btn-crear');
+    let res = await consumidor.post('usuarios','nuevo',formData);
+    Spinner.end('btn-crear');
     switch (res.status) {
-        case 200:
-            
+        case 201:
+            location.href = `${appLinkDomain}/usuarios`;
             break;
         case 400:
-            let errores = [];
-            errores.forEach(({input,mensaje})=>);
+            let errores = res.errores;
+            errores.forEach(({input,mensaje})=>Erro.set(`${input}_group`,mensaje));
             break;
         default:
             console.log(res);    
             break;
     }
+
 });

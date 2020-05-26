@@ -16,8 +16,8 @@
           Usuario
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownSolicitudes">
-          <a class="dropdown-item" href="<?php echo URL?>/usuario/crear">Crear</a>
-          <a class="dropdown-item" href="<?php echo URL?>/usuario">Listar</a>
+          <a class="dropdown-item" href="<?php echo URL?>/usuarios/crear">Crear</a>
+          <a class="dropdown-item" href="<?php echo URL?>/usuarios">Listar</a>
         </div>
       </li>
       <li class="nav-item dropdown <?php echo ($this->active == 'servicios')?'active':'' ?>">

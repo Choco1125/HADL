@@ -1,5 +1,5 @@
 <?php
-    class Usuario extends Controller{
+    class Usuarios extends Controller{
         public function __construct(){
             parent::__construct();
             $this->view->set_title_page('Usuario');
@@ -13,6 +13,8 @@
         public function crear(){
             $this->view->scripts = [
                 'libs/peticiones.js',
+                'libs/erro.js',
+                'libs/spinner.js',
                 'usuario/crear.js'
             ];
             $this->view->set_title_page('Crear Usuario');
@@ -27,6 +29,7 @@
             $nit = $this->set_value($_POST['nit']);
             $celular = $this->set_value($_POST['celular']);
             $direccion = $this->set_value($_POST['direccion']);
+
             $celular = $this->formatear_numero($celular);
             $errores = [];
 
@@ -49,7 +52,7 @@
                 ]);
             }
 
-            if($rol == 'user'){
+            if($rol == 'user' && !empty($celular)){
                 if(!$this->is_valid_number($celular)){
                     array_push($errores,[
                         'input' => 'celular',
@@ -59,7 +62,29 @@
             }
 
             if(count($errores) == 0){
+                $this->load_model('Usuario');
+                $usuario = new Usuario();
+                $usuario->set_nombres(ucwords($nombres));
+                $usuario->set_email($email);
+                $usuario->set_rol($rol);
+                $usuario->set_estado($estado);
+                $usuario->set_nit($nit);
+                $usuario->set_direccion($direccion);
+                $usuario->set_celular($celular);
+                $usuario->set_password(password_hash(uniqid(),PASSWORD_DEFAULT));
 
+                $guardar = $usuario->crear();
+
+                if($guardar == ['ok']){
+                    echo json_encode([
+                        'status' => 201
+                    ]);
+                }else{
+                    echo json_encode([
+                        'status' => 500,
+                        'error' => $guardar
+                    ]);
+                }
             }else{
                 echo json_encode([
                     'status' => 400,
