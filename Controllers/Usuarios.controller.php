@@ -4,13 +4,24 @@
             parent::__construct();
             $this->view->set_title_page('Usuario');
             $this->view->active = 'usuario';
+
+            if(!$this->is_login() && !$this->is_admin()){
+                header('location: '.URL.'/');
+            }
         }
 
         public function render(){
             $this->load_model('Usuario');
 
             $usuarios = new Usuario();
-            $this->view->usuarios = $usuarios->seleccionar_todos();
+            $usuarios->set_id($_SESSION['id']);
+            $this->view->scripts = [
+                'libs/spinner.js',
+                'libs/alerta.js',
+                'libs/peticiones.js',
+                'usuario/main.js'
+            ];
+            $this->view->usuarios = $usuarios->traer_todos();
             $this->view->render('admin/usuario/index');
         }
 
@@ -93,6 +104,37 @@
                 echo json_encode([
                     'status' => 400,
                     'errores' => $errores
+                ]);
+            }
+        }
+
+        public function cambiar_estado(){
+            $id = $this->set_value($_POST['id']);
+            $estado = $this->set_value($_POST['estado']);
+
+            $estados = $estado == 'activo' ? 'inactivo' : 'activo';
+
+            $this->load_model('Usuario');
+
+            $usuario = new Usuario();
+
+            $usuario->set_id($id);
+            $usuario->set_estado($estados);
+            $actualizar = $usuario->actualizar_estado();
+
+            if($actualizar == ['ok']){
+                echo json_encode([
+                    'status' => 200,
+                    'datos' => [
+                        'id' => $usuario->get_id(),
+                        'estado' => $usuario->get_estado(),
+                        'estado_ingresado' => $estado
+                    ]
+                ]);
+            }else{
+                echo json_encode([
+                    'status' => 500,
+                    'error' => $actualizar
                 ]);
             }
         }

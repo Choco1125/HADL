@@ -120,4 +120,44 @@
                 ];
             }
         }
+
+        public function traer_todos(){
+            try {
+                $consulta = "SELECT * FROM usuario WHERE id != :id AND id != 1";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    'id' => $this->id
+                ]);
+
+                $result_set = null;
+
+                while($row  = $sql->fetch(PDO::FETCH_OBJ)){
+                    $result_set[] = $row;
+                }
+                return $result_set;
+
+            } catch (PDOException $ex) {
+                return [
+                    'error' => $ex->errorInfo
+                ];
+            }
+        }
+
+        public function actualizar_estado(){
+            try {
+                $consulta = "UPDATE usuario SET estado = :estado WHERE id = :id";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    'id' => $this->id,
+                    'estado' => $this->estado
+                ]);
+                
+                return ['ok'];
+
+            } catch (PDOException $ex) {
+                return [
+                    'error' => $ex->errorInfo
+                ];
+            }
+        }
     }

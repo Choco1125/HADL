@@ -64,6 +64,7 @@
 
                         if($login->is_valid_password($password)){
                             $_SESSION['rol'] = $login->get_rol();
+                            $_SESSION['id'] = $login->get_id();
                             echo json_encode(['status'=>200,'rol'=> $_SESSION['rol']]);
                         }else{
                             echo json_encode(['status'=>400,'error'=> [[
@@ -86,7 +87,7 @@
         }
 
         public function salir(){
-            unset($_SESSION['rol']);
+            unset($_SESSION['rol'],$_SESSION['id']);
             header('location: '.URL.'/');
         }
     }

@@ -38,7 +38,7 @@
                     <!-- <td class="text-<?php echo $usuario->estado == 'activo'?'danger':'success' ?>">
                         <?php echo ucfirst($usuario->estado); ?>
                     </td> -->
-                    <td>
+                    <td id="botones-<?php echo $usuario->id?>">
                         <a class="btn btn-outline-primary btn-sm" href="<?php echo URL?>/usuarios/editar/<?php echo $usuario->id?>">
                             <!-- <i class="fas fa-user-edit"></i> -->
                             Editar
@@ -46,14 +46,14 @@
                         <?php
                             if($usuario->estado == 'activo'){
                         ?>
-                            <button class="btn btn-outline-danger btn-sm" data-id="<?php echo $usuario->id?>" data-toggle="modal" data-target="#actualizar">
+                            <button class="btn btn-outline-danger btn-sm btn-estado" id="<?php echo $usuario->id?>" data-estado="<?php echo $usuario->estado; ?>">
                                 <!-- <i class="fas fa-user-slash"></i> -->
                                 Desactivar
                             </button>
                         <?php 
                             }else{
                         ?>
-                            <button class="btn btn-outline-success btn-sm" data-id="<?php echo $usuario->id?>" data-toggle="modal" data-target="#actualizar">
+                            <button class="btn btn-outline-success btn-sm btn-estado" id="<?php echo $usuario->id?>" data-estado="<?php echo $usuario->estado; ?>">
                                 <!-- <i class="fas fa-user"></i> -->
                                 Activar
                             </button>

@@ -20,6 +20,10 @@
 			}
 		}
 
+		public function is_login(){
+			return isset($_SESSION['id']);
+		}
+
 		public function set_value($value){
 			return isset($value)? trim($value) : '';
 		}

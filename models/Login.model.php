@@ -3,6 +3,7 @@
 
         private $email;
         private $password;
+        private $id;
         private $rol;
     
         public function __construct($email = null,$password= null,$rol=null){
@@ -11,6 +12,14 @@
             $this->password = $password;
             $this->rol = $rol;
             parent::__construct();
+        }
+
+        public function set_id($id){
+            $this->id = $id;
+        }
+
+        public function get_id(){
+            return $this->id;
         }
 
         public function set_email($email){
@@ -39,7 +48,7 @@
 
         public function iniciar_sesion(){
             try {
-                $consulta = "SELECT rol, password FROM usuario WHERE email = :email LIMIT 1";
+                $consulta = "SELECT rol,id,password FROM usuario WHERE email = :email LIMIT 1";
 
                 $sql = $this->db_connection->prepare($consulta);
                 $sql->execute([
@@ -49,6 +58,7 @@
                 while($row = $sql->fetch(PDO::FETCH_OBJ)){
                     $this->password = $row->password;
                     $this->rol = $row->rol;
+                    $this->id = $row->id;
                 }
 
                 return ['ok'];

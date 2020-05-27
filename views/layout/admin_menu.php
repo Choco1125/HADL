@@ -13,7 +13,7 @@
       </li>
       <li class="nav-item dropdown <?php echo ($this->active == 'usuario')?'active':'' ?>">
         <a class="nav-link dropdown-toggle" href="<?php echo URL?>/" id="dropdownSolicitudes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Usuario
+          Usuarios
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownSolicitudes">
           <a class="dropdown-item" href="<?php echo URL?>/usuarios/crear">Crear</a>
@@ -28,6 +28,9 @@
           <a class="dropdown-item" href="<?php echo URL?>/servicios/catalogo">Catágolo</a>
           <a class="dropdown-item" href="<?php echo URL?>/servicios/solicitud">Solicitudes</a>
         </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo URL?>/main/salir">Cerrar sesión</a>
       </li>
     </ul>
   </div>
