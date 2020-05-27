@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-05-2020 a las 07:39:04
+-- Tiempo de generación: 27-05-2020 a las 07:30:33
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.3
 
@@ -34,15 +34,6 @@ CREATE TABLE `servicio` (
   `descripcion` text COLLATE utf8_bin DEFAULT NULL,
   `precio` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
---
--- Volcado de datos para la tabla `servicio`
---
-
-INSERT INTO `servicio` (`id`, `nombre`, `descripcion`, `precio`) VALUES
-(2, 'Reparación de contenedor', 'Se limpian y se les quita el éxito', 890000),
-(3, 'Acondicionamiento de contenedor tipo oficina', 'Se modifica el contenedor y se crea una oficina con baño incluido', 4500000),
-(4, 'Prueba', 'Test', 345000);
 
 -- --------------------------------------------------------
 
@@ -81,7 +72,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `email`, `nombres`, `password`, `rol`, `nit`, `celular`, `direccion`, `estado`) VALUES
-(1, 'choco@mail.com', '', '123', 'admin', NULL, NULL, NULL, 'activo');
+(1, 'choco@mail.com', 'Choco', '123', 'admin', '', '', '', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -105,8 +96,7 @@ ALTER TABLE `solicitud`
 --
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`),
-  ADD UNIQUE KEY `celular` (`celular`);
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -116,7 +106,7 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `servicio`
 --
 ALTER TABLE `servicio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `solicitud`

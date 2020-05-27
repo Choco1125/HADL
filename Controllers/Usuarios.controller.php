@@ -138,4 +138,97 @@
                 ]);
             }
         }
+
+        public function editar($parametros){
+            $id = $this->set_value($parametros[0]);
+
+            if(!empty($id)){
+                $this->load_model('Usuario');
+                
+                $usuario = new Usuario();
+                $usuario->set_id($id);
+                $mis_datos = $usuario->seleccionar_mis_datos();
+
+                if($mis_datos == ['ok'] && !is_null($usuario->get_email())){
+                    $this->view->scripts = [
+                        'libs/spinner.js',
+                        'libs/alerta.js',
+                        'libs/peticiones.js',
+                        'libs/erro.js',
+                        'usuario/editar.js'
+                    ];
+                    $this->view->usuario = $usuario;
+                    $this->view->render('admin/usuario/editar');
+                }else{
+                    header('location: '.URL.'/usuarios');
+                }    
+            }else{
+                header('location: '.URL.'/usuarios');
+            }
+        }
+
+        public function actualizar(){
+            $id = $this->set_value($_POST['id']);
+            $nombres = $this->set_value($_POST['nombres']);
+            $email = $this->set_value($_POST['email']);
+            $rol = $this->set_value($_POST['rol']);
+            $estado = $this->set_value($_POST['estado']);
+            $nit = $this->set_value($_POST['nit']);
+            $celular = $this->set_value($_POST['celular']);
+            $direccion = $this->set_value($_POST['direccion']);
+
+            $celular = $this->formatear_numero($celular);
+            $errores = [];
+
+            if(empty($nombres)){
+                array_push($errores,[
+                    'input' => 'nombre',
+                    'mensaje' => 'Debes ingresar un nombre'
+                ]);
+            }
+
+            if(empty($email)){
+                array_push($errores,[
+                    'input' => 'email',
+                    'mensaje' => 'Debes ingresar un correo'
+                ]);
+            }else if(!$this->is_valid_email($email)){
+                array_push($errores,[
+                    'input' => 'email',
+                    'mensaje' => 'Debes ingresar un correo válido'
+                ]);
+            }
+
+            if($rol == 'user' && !empty($celular)){
+                if(!$this->is_valid_number($celular)){
+                    array_push($errores,[
+                        'input' => 'celular',
+                        'mensaje' => 'Debes ingresar un número celular válido'
+                    ]);
+                }
+            }
+
+            if(count($errores) == 0){
+                $this->load_model('Usuario');
+                $usuario = new Usuario($id,$email,ucwords($nombres),null,$rol,$nit,$celular,$direccion,$estado);
+            
+                $guardar = $usuario->actualizar();
+
+                if($guardar == ['ok']){
+                    echo json_encode([
+                        'status' => 200
+                    ]);
+                }else{
+                    echo json_encode([
+                        'status' => 500,
+                        'error' => $guardar
+                    ]);
+                }
+            }else{
+                echo json_encode([
+                    'status' => 400,
+                    'errores' => $errores
+                ]);
+            } 
+        }
     }

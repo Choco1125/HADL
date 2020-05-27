@@ -16,6 +16,7 @@
                 <tr>
                     <th scope="col">Correo</th>
                     <th scope="col">Nombre</th>
+                    <th scope="col">NIT</th>
                     <th scope="col">Rol</th>
                     <th scope="col"></th>
                 </tr>
@@ -28,6 +29,7 @@
                 <tr>
                     <td><?php echo $usuario->email; ?></td>
                     <td><?php echo $usuario->nombres; ?></td>
+                    <td><?php echo $usuario->nit; ?></td>
                     <td>
                         <?php if($usuario->rol == 'admin'){ ?>
                             <i class="fas fa-user-tie" title="Administrador"></i>
@@ -35,9 +37,6 @@
                             <i class="fas fa-user" title="Usuario"></i>
                         <?php } ?>
                     </td>
-                    <!-- <td class="text-<?php echo $usuario->estado == 'activo'?'danger':'success' ?>">
-                        <?php echo ucfirst($usuario->estado); ?>
-                    </td> -->
                     <td id="botones-<?php echo $usuario->id?>">
                         <a class="btn btn-outline-primary btn-sm" href="<?php echo URL?>/usuarios/editar/<?php echo $usuario->id?>">
                             <!-- <i class="fas fa-user-edit"></i> -->

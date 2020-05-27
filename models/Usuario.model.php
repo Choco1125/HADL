@@ -160,4 +160,54 @@
                 ];
             }
         }
+
+        public function seleccionar_mis_datos(){
+            try {
+                $consulta = "SELECT * FROM usuario WHERE id = :id AND id != 1";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    'id' => $this->id
+                ]);
+
+                while($row  = $sql->fetch(PDO::FETCH_OBJ)){
+                    $this->email = $row->email;
+                    $this->nombres = $row->nombres;
+                    $this->rol = $row->rol;
+                    $this->nit = $row->nit;
+                    $this->celular = $row->celular;
+                    $this->direccion = $row->direccion;
+                    $this->estado = $row->estado;
+                }
+                return ['ok'];
+
+            } catch (PDOException $ex) {
+                return [
+                    'error' => $ex->errorInfo
+                ];
+            }
+        }
+
+        public function actualizar(){
+            try {
+                $consulta = "UPDATE usuario  SET email =:email ,nombres = :nombres,rol = :rol,nit = :nit,celular = :celular,direccion = :direccion,estado = :estado WHERE id = :id ";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    'id' => $this->id,
+                    'email' => $this->email,
+                    'nombres' => $this->nombres,
+                    'rol' => $this->rol,
+                    'nit' => $this->nit,
+                    'celular' => $this->celular,
+                    'direccion' => $this->direccion,
+                    'estado' => $this->estado
+                ]);
+                
+                return ['ok'];
+
+            } catch (PDOException $ex) {
+                return [
+                    'error' => $ex->errorInfo
+                ];
+            }
+        }
     }
