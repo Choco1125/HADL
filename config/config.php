@@ -1,7 +1,7 @@
 <?php
     //App
     define('URL', 'http://localhost/HADL');
-    define('APPNAME', 'HADL');
+    define('APPNAME', 'JI CONTENEDORES');
 	date_default_timezone_set('America/Bogota');
 
     //Base de datos

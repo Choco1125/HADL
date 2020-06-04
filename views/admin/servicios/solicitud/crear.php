@@ -6,21 +6,29 @@
     <div class="row justify-content-center mt-2">
         <h1>Nueva solicitud de servicio</h1>
     </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-3">
         <div class="card col-md-8 rounded">
-            <div class="form-row">
-                <div class="col">
+            <div class="card-body form-row">
+                <div class="form-group col-md-6 col-12"  id="usuario_group">
                     <label for="usuario">Cliene:</label>
-                    <select name="usuario" id="usuario">
+                    <select name="usuario" id="usuario" class="custom-select">
                         <option value="">Selecciona un cliente</option>
                         <?php
                             if(isset($this->clientes)){
                                 foreach($this->clientes as $cliente){
-                                    
+                        ?>
+                                    <option value="<?echo $cliente->id?>"><?php echo $cliente->nombres .' - (' .$cliente->nit. ')' ?></option>
+                        <?php
                                 }
                             }
                         ?>
                     </select>
+                    <span class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6 col-12"  id="fecha_entrega_group">
+                    <label for="fecha_entrega">Fecha entrega:</label>
+                    <input type="date" name="fecha_entrega" id="fecha_entrega" placeholder="12/12/2020" class="form-control">
+                    <span class="text-danger"></span>
                 </div>
             </div>
         </div>

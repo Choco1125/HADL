@@ -55,8 +55,9 @@ function nuevoSelect() {
 
 crear.addEventListener('click', () =>nuevoSelect());
 
-guardar.addEventListener('click',()=>{
+guardar.addEventListener('click', async ()=>{
     let selects = document.getElementsByName('servicios');
+    let usuario = document.getElementById('usuario');
 
     let datos = [];
 
@@ -66,17 +67,43 @@ guardar.addEventListener('click',()=>{
         }
     }
 
+    if(usuario.value == ''){
+        datos = [];
+        Erro.set('usuario_group','Debes seleccionar un cliente');
+    }
+
     if(datos.length > 0){
         let descripcion = document.getElementById('descripcion');
+        let fechaEntrega = document.getElementById('fecha_entrega');
         let formData = new FormData();
 
         formData.append('descripcion',descripcion.value);
         formData.append('servicios',datos);
-    }else{
-        Alerta.show('warning','No hay valores para guardar.');
-    }
+        formData.append('cliente',usuario.value);
+        formData.append('fechaEntrega',fechaEntrega.value);
 
-    console.log(datos);    
+        Spinner.start('btn-guardar');
+        let res = await consumidor.post('servicios','crea_solicitud',formData);
+        Spinner.end('btn-guardar');
+        
+        console.log(res);
+
+        switch (res.status) {
+            case 201:
+                location.href = `${appLinkDomain}/servicios/solicitud`; 
+                break;
+            case 400:
+                let errores = res.error;
+                errores.forEach(({input,mensaje})=>Erro.set(`${input}_group`,mensaje));
+                break;
+        
+            default:
+                console.log(res);
+                break;
+        }
+    }else{
+        Alerta.show('warning','No hay servicios para guardar.');
+    }
 });
 
 document.addEventListener('DOMContentLoaded', async () => {

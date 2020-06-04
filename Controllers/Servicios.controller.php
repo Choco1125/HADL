@@ -18,13 +18,48 @@
         }
 
         public function nueva_solicitud(){
-            
+
+            $this->load_model('Usuario');
+            $usuarios = new Usuario();
+            $usuarios->set_id($_SESSION['id']);
+            $this->view->clientes = $usuarios->traer_todos();
             $this->view->scripts = [
                 'libs/peticiones.js',
+                'libs/erro.js',
                 'libs/alerta.js',
+                'libs/spinner.js',
                 'servicios/solicitud/crear.js'
             ];
             $this->view->render('admin/servicios/solicitud/crear');
+        }
+
+        public function crea_solicitud(){
+
+            $cliente = $this->set_value($_POST['cliente']);
+            $descripcion = $this->set_value($_POST['descripcion']); 
+            $fecha_entrega = $this->set_value($_POST['fechaEntrega']);
+            $servicos = $this->set_value($_POST['servicios']);
+            
+            $servicios = explode(',',$servicos);
+            
+            $this->load_model('Solicitud');
+            $solicitud = new Solicitud(null,$cliente,date('Y-m-d'),$fecha_entrega,$descripcion);
+            $guardar = $solicitud->crear();
+            
+            if($guardar == ['ok']){
+                $test = [];
+                foreach($servicios as $servicio){
+                    $solicitud->agregar_servicio($servicio);       
+                }
+                echo json_encode([
+                    'status'=>201
+                ]);
+            }else{
+                echo json_encode([
+                    'status' => 400,
+                    'error' => $guardar
+                ]);
+            }
         }
 
         //----------------------------------------------------------
