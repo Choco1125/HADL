@@ -11,9 +11,13 @@
         }
 
         //Solicitudes----------------------------------------
-      
-
         public function solicitud(){
+            $this->load_model('Solicitud');
+            $solicitud = new Solicitud();
+            // echo "<pre>";
+            // var_dump($solicitud->tarer_todos());
+            // echo "</pre>";
+            $this->view->solicitudes = $solicitud->tarer_todos();
             $this->view->render('admin/servicios/solicitud');
         }
 

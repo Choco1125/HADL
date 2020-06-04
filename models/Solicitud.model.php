@@ -95,4 +95,33 @@
                 ];
             }
         }
+
+        public function tarer_todos(){
+            try {
+                $consulta = "SELECT solicitud.id AS solicitudId, solicitud.fecha_creacion, solicitud.fecha_entrega, solicitud.descripcion, usuario.nombres, usuario.nit FROM solicitud INNER JOIN usuario ON solicitud.usuario_id = usuario.id";
+                $sql = $this->db_connection->query($consulta);
+                $servicios = null;
+
+                while ($servicio = $sql->fetch(PDO::FETCH_ASSOC) ) {
+                    $servicios[] = $servicio;
+                }
+
+                for($i = 0; $i < count($servicios); $i++){
+                   
+                    $consulta = "SELECT servicio.nombre,solicitud_servico.servicio_id FROM servicio INNER JOIN solicitud_servico ON servicio.id = solicitud_servico.servicio_id WHERE solicitud_servico.solicitud_id = :solicitud_id";
+                    $sql = $this->db_connection->prepare($consulta);
+                    $sql->execute([
+                        ':solicitud_id' => $servicios[$i]['solicitudId']
+                    ]);
+
+                    while ($servicio_de_solicitud = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        $servicios[$i]['servicios'][] = $servicio_de_solicitud;
+                    }
+                }
+                return $servicios;
+                
+            } catch (PDOException $ex) {
+                return ['error'=> $ex->errorInfo];
+            }
+        }
     }
