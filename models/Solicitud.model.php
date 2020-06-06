@@ -105,13 +105,32 @@
                 while ($servicio = $sql->fetch(PDO::FETCH_ASSOC) ) {
                     $servicios[] = $servicio;
                 }
+                return $servicios;
+                
+            } catch (PDOException $ex) {
+                return ['error'=> $ex->errorInfo];
+            }
+        }
+
+        public function mis_dato(){
+            try {
+                $consulta = "SELECT solicitud.id AS solicitudId, solicitud.fecha_creacion, solicitud.fecha_entrega, solicitud.descripcion, usuario.id AS usuarioId FROM solicitud INNER JOIN usuario ON solicitud.usuario_id = usuario.id WHERE solicitud.id = :solicitud_id";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    ':solicitud_id' => $this->id
+                ]);
+                $servicios = null;
+
+                while ($servicio = $sql->fetch(PDO::FETCH_ASSOC) ) {
+                    $servicios[] = $servicio;
+                }
 
                 for($i = 0; $i < count($servicios); $i++){
                    
                     $consulta = "SELECT servicio.nombre,solicitud_servico.servicio_id FROM servicio INNER JOIN solicitud_servico ON servicio.id = solicitud_servico.servicio_id WHERE solicitud_servico.solicitud_id = :solicitud_id";
                     $sql = $this->db_connection->prepare($consulta);
                     $sql->execute([
-                        ':solicitud_id' => $servicios[$i]['solicitudId']
+                        ':solicitud_id' => $this->id
                     ]);
 
                     while ($servicio_de_solicitud = $sql->fetch(PDO::FETCH_ASSOC)) {
@@ -122,6 +141,43 @@
                 
             } catch (PDOException $ex) {
                 return ['error'=> $ex->errorInfo];
+            }
+        }
+
+        public function actualizar(){
+            try{
+                $consulta = "UPDATE solicitud SET usuario_id = :usuario_id, fecha_entrega = :fecha_entrega, descripcion = :descripcion WHERE id = :id";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    'usuario_id' => $this->usuario_id,
+                    'fecha_entrega' => $this->fecha_entrega,
+                    'descripcion' => $this->descripcion,
+                    'id' => $this->id
+                ]);
+
+                return ['ok'];
+            }catch(PDOException $ex){
+                return [
+                    'error' => $ex->errorInfo
+                ];
+            }
+        }
+
+        public function eliminar_servicios(){
+            try {
+                $consulta = "DELETE FROM solicitud_servico WHERE solicitud_id = :solicitud_id";
+                $sql = $this->db_connection->prepare($consulta);
+
+                $sql->execute([
+                    'solicitud_id' => $this->id
+                ]);
+
+                return ['ok'];
+
+            } catch (PDOException $ex) {
+                return [
+                    'error' => $ex->errorInfo
+                ];
             }
         }
     }

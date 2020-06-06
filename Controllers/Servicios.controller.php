@@ -47,7 +47,7 @@
             $servicios = explode(',',$servicos);
             
             $this->load_model('Solicitud');
-            $solicitud = new Solicitud(null,$cliente,date('Y-m-d'),$fecha_entrega,$descripcion);
+            $solicitud = new Solicitud(null,$cliente,date('Y-m-d'),$fecha_entrega,ucfirst($descripcion));
             $guardar = $solicitud->crear();
             
             if($guardar == ['ok']){
@@ -62,6 +62,73 @@
                 echo json_encode([
                     'status' => 400,
                     'error' => $guardar
+                ]);
+            }
+        }
+
+        public function editar_solicitud($params = null){
+            $id = isset($params)? $params[0]: null;
+            if(isset($id)){
+                
+                $this->load_model('Usuario');
+                $usuarios = new Usuario();
+                $usuarios->set_id($_SESSION['id']);
+                
+                $this->load_model('Solicitud');
+                $solicitud = new Solicitud();
+                $solicitud->set_id($id);
+                $buscar = $solicitud->mis_dato();
+                
+                $this->load_model('Servicio');
+                $servicio = new Servicio();
+
+                $this->view->servicios = $servicio->seleccionar_todos();
+                
+                if(!is_null($buscar)){
+                    $this->view->clientes = $usuarios->traer_todos();
+                    $this->view->solicitud = $buscar[0];
+
+                    $this->view->scripts = [
+                        'libs/erro.js',
+                        'libs/peticiones.js',
+                        'libs/alerta.js',
+                        'libs/spinner.js',
+                        'servicios/solicitud/editar.js'
+                    ];
+                    $this->view->render('admin/servicios/solicitud/editar');
+                }else{
+                    header('location:'.URL.'/servicios/solicitud');
+                }
+            }else{
+                header('location:'.URL.'/servicios/solicitud');
+            }
+        }
+
+        public function actualizar_solicitud(){
+            $solicitud_id = $this->set_value($_POST['solicitudId']);
+            $cliente = $this->set_value($_POST['cliente']);
+            $descripcion = $this->set_value($_POST['descripcion']); 
+            $fecha_entrega = $this->set_value($_POST['fechaEntrega']);
+            $servicos = $this->set_value($_POST['servicios']);
+            
+            $servicios = explode(',',$servicos);
+            
+            $this->load_model('Solicitud');
+            $solicitud = new Solicitud($solicitud_id,$cliente,null,$fecha_entrega,ucfirst($descripcion));
+            $actualizar = $solicitud->actualizar();
+            
+            if($actualizar == ['ok']){
+                $solicitud->eliminar_servicios();
+                foreach($servicios as $servicio){
+                    $solicitud->agregar_servicio($servicio);       
+                }
+                echo json_encode([
+                    'status'=>200
+                ]);
+            }else{
+                echo json_encode([
+                    'status' => 400,
+                    'error' => $actualizar
                 ]);
             }
         }

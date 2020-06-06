@@ -53,6 +53,22 @@ function nuevoSelect() {
     agregarASelect(select);
 }
 
+function addEventeButtons() {
+    let botonesEliminar = document.getElementsByClassName('btn-link');
+    for (let i = 0; i < botonesEliminar.length; i++) {
+        botonesEliminar.item(i).addEventListener('click',()=>{    
+            
+            if (document.getElementsByClassName('custom-select').length > 2) {
+                cardBody.removeChild(botonesEliminar.item(i).parentElement);
+            } else {
+                Alerta.show('danger','La solicitud debe incluir mínimo un servicio.');
+            }
+
+            addEventeButtons();
+        });
+    }
+}
+
 crear.addEventListener('click', () =>nuevoSelect());
 
 guardar.addEventListener('click', async ()=>{
@@ -75,19 +91,23 @@ guardar.addEventListener('click', async ()=>{
     if(datos.length > 0){
         let descripcion = document.getElementById('descripcion');
         let fechaEntrega = document.getElementById('fecha_entrega');
+        let solicitudId =  guardar.dataset.solicitud;
         let formData = new FormData();
 
+        formData.append('solicitudId',solicitudId);
         formData.append('descripcion',descripcion.value);
         formData.append('servicios',datos);
         formData.append('cliente',usuario.value);
         formData.append('fechaEntrega',fechaEntrega.value);
 
         Spinner.start('btn-guardar');
-        let res = await consumidor.post('servicios','crea_solicitud',formData);
+        console.log(solicitudId);
+        
+        let res = await consumidor.post('servicios','actualizar_solicitud',formData);
         Spinner.end('btn-guardar');
         
         switch (res.status) {
-            case 201:
+            case 200:
                 location.href = `${appLinkDomain}/servicios/solicitud`; 
                 break;
             case 400:
@@ -106,5 +126,6 @@ guardar.addEventListener('click', async ()=>{
 
 document.addEventListener('DOMContentLoaded', async () => {
     await getServicios();
-    nuevoSelect();
+    addEventeButtons();
+
 });
