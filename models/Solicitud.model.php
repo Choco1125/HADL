@@ -180,4 +180,18 @@
                 ];
             }
         }
+
+        public function eliminar(){
+            try {
+                $sql = $this->db_connection->prepare('DELETE FROM solicitud WHERE id = :id');
+                $sql->execute([
+                    'id' => $this->id
+                ]);
+                return ['ok'];
+            } catch (PDOException $ex) {
+                return [
+                    'error' => $ex->errorInfo
+                ];
+            }
+        }
     }

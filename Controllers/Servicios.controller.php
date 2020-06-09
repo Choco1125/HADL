@@ -17,6 +17,13 @@
             // echo "<pre>";
             // var_dump($solicitud->tarer_todos());
             // echo "</pre>";
+            $this->view->scripts = [
+                'libs/peticiones.js',
+                'libs/erro.js',
+                'libs/alerta.js',
+                'libs/spinner.js',
+                'servicios/solicitud/main.js'
+            ];
             $this->view->solicitudes = $solicitud->tarer_todos();
             $this->view->render('admin/servicios/solicitud');
         }
@@ -129,6 +136,26 @@
                 echo json_encode([
                     'status' => 400,
                     'error' => $actualizar
+                ]);
+            }
+        }
+
+        public function eliminar_solicitud(){
+            $id = $_POST['id'];
+
+            $this->load_model('Solicitud');
+            $solicitud = new Solicitud();
+            $solicitud->set_id($id);
+
+            $eliminar = $solicitud->eliminar();
+            if($eliminar == ['ok']){
+                echo json_encode([
+                    'status' => 200
+                ]);
+            }else{
+                echo json_encode([
+                    'status' => 400,
+                    'error'=>$eliminar['error']
                 ]);
             }
         }
