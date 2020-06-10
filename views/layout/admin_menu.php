@@ -8,8 +8,14 @@
       <li class="nav-item <?php echo ($this->active == 'home')?'active':'' ?>">
         <a class="nav-link" href="<?php echo URL?>/">Inico</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo URL?>/">Pricing</a>
+      <li class="nav-item dropdown <?php echo ($this->active == 'cotizacion')?'active':'' ?>">
+        <a class="nav-link dropdown-toggle" href="<?php echo URL?>/" id="dropdownCotizacion" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Cotización
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownCotizacion">
+          <a class="dropdown-item" href="<?php echo URL?>/cotizaciones/crear">Crear</a>
+          <a class="dropdown-item" href="<?php echo URL?>/cotizaciones">Listar</a>
+        </div>
       </li>
       <li class="nav-item dropdown <?php echo ($this->active == 'usuario')?'active':'' ?>">
         <a class="nav-link dropdown-toggle" href="<?php echo URL?>/" id="dropdownSolicitudes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

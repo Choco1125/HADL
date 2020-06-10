@@ -74,21 +74,22 @@ guardar.addEventListener('click', async ()=>{
 
     if(datos.length > 0){
         let descripcion = document.getElementById('descripcion');
-        let fechaEntrega = document.getElementById('fecha_entrega');
+        let estado = document.getElementById('estado');
         let formData = new FormData();
 
-        formData.append('descripcion',descripcion.value);
-        formData.append('servicios',datos);
         formData.append('cliente',usuario.value);
-        formData.append('fechaEntrega',fechaEntrega.value);
+        formData.append('descripcion',descripcion.value);
+        formData.append('estado',estado.value);
+        formData.append('fecha_vencimiento',estado.value);
+        formData.append('servicios',datos);
 
         Spinner.start('btn-guardar');
-        let res = await consumidor.post('servicios','crea_solicitud',formData);
+        let res = await consumidor.post('cotizaciones','storage',formData);
         Spinner.end('btn-guardar');
         
         switch (res.status) {
             case 201:
-                location.href = `${appLinkDomain}/servicios/solicitud`; 
+                location.href = `${appLinkDomain}/cotizaciones`; 
                 break;
             case 400:
                 let errores = res.error;
