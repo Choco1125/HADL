@@ -9,6 +9,9 @@
 
         public function render()
         {
+            $this->load_model('Cotizacion');
+            $cotizacion = new Cotizacion();
+            $this->view->cotizaciones = $cotizacion->seleccionar_todos();
             $this->view->render('admin/cotizacion/index');
         }
 
@@ -48,9 +51,7 @@
                     array_push($test,$lol);
                 }
                 echo json_encode([
-                    'status'=>200,
-                    'id' => $cotizacion->get_id(),
-                    'test' => $test
+                    'status'=>201
                 ]);
             }else{
                 echo json_encode([
@@ -58,5 +59,48 @@
                     'error' => $guardar
                 ]);
             }
+        }
+
+        public function editar($params)
+        {
+            $id = isset($params)? $params[0]: null;
+            if(isset($id)){
+                
+                
+                $this->load_model('Cotizacion');
+                $cotizacion = new Cotizacion();
+                $cotizacion->set_id($id);
+                
+                $buscar = $cotizacion->mis_datos();
+                
+                
+                if(!is_null($buscar)){
+                    
+                    $this->load_model('Usuario');
+                    $usuarios = new Usuario();
+                    $usuarios->set_id($_SESSION['id']);
+
+                    $this->view->clientes = $usuarios->traer_todos();
+                    $this->view->cotizacion = $buscar[0];
+
+                    $this->load_model('Servicio');
+                    $servicios = new Servicio();
+
+                    $this->view->servicios = $servicios->seleccionar_todos();
+
+                    $this->view->scripts = [
+                        'libs/erro.js',
+                        'libs/peticiones.js',
+                        'libs/alerta.js',
+                        'libs/spinner.js',
+                        'cotizacion/editar.js'
+                    ];
+                    $this->view->render('admin/cotizacion/editar');
+                }else{
+                    header('location:'.URL.'/cotizaciones');
+                }
+            }else{
+                header('location:'.URL.'/cotizaciones');
+            }   
         }
     }

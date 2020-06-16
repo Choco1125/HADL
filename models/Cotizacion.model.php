@@ -80,6 +80,23 @@
             return $this->estado;
         }
 
+        public function seleccionar_todos()
+        {
+            try {
+                $consulta = "SELECT cotizacion.id, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id";
+                $sql = $this->db_connection->query($consulta);
+
+                $resulset = [];
+
+                while ($row = $sql->fetch(PDO::FETCH_OBJ)) {
+                    $resulset[] = $row; 
+                }
+                return $resulset;
+            } catch (PDOException $ex) {
+                return null;
+            }
+        }
+
         public function crear()
         {
             try {
@@ -118,6 +135,39 @@
                 return [
                     'error' => $ex->errorInfo
                 ];
+            }
+        }
+
+        public function mis_datos()
+        {
+            try {
+                $consulta = "SELECT cotizacion.id AS cotizaciondId, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.id AS usuarioId FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id WHERE cotizacion.id = :cotizacion_id ";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    ':cotizacion_id' => $this->id
+                ]);
+                $servicios = null;
+
+                while ($servicio = $sql->fetch(PDO::FETCH_ASSOC) ) {
+                    $servicios[] = $servicio;
+                }
+
+                for($i = 0; $i < count($servicios); $i++){
+                   
+                    $consulta = "SELECT servicio.nombre, cotizacion_serivicio.servicio_id FROM servicio INNER JOIN cotizacion_serivicio ON servicio.id = cotizacion_serivicio.servicio_id WHERE cotizacion_serivicio.cotizacion_id = :cotizacion_id";
+                    $sql = $this->db_connection->prepare($consulta);
+                    $sql->execute([
+                        ':cotizacion_id' => $this->id
+                    ]);
+
+                    while ($servicio_de_solicitud = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        $servicios[$i]['servicios'][] = $servicio_de_solicitud;
+                    }
+                }
+                return $servicios;
+                
+            } catch (PDOException $ex) {
+                return ['error'=> $ex->errorInfo];
             }
         }
     }

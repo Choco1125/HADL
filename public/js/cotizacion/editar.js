@@ -39,7 +39,7 @@ function nuevoSelect() {
     boton.innerHTML = `<i class="fas fa-times text-danger"></i>`;
 
     boton.addEventListener('click', () => {
-        if (document.getElementsByClassName('custom-select').length > 1) {
+        if (document.getElementsByClassName('custom-select').length > 3) {
             cardBody.removeChild(formGroup);
         } else {
             Alerta.show('danger','La solicitud debe incluir mínimo un servicio.');
@@ -52,7 +52,21 @@ function nuevoSelect() {
 
     agregarASelect(select);
 }
+function addEventeButtons() {
+    let botonesEliminar = document.getElementsByClassName('btn-link');
+    for (let i = 0; i < botonesEliminar.length; i++) {
+        botonesEliminar.item(i).addEventListener('click',()=>{    
+            
+            if (document.getElementsByClassName('custom-select').length > 2) {
+                cardBody.removeChild(botonesEliminar.item(i).parentElement);
+            } else {
+                Alerta.show('danger','La solicitud debe incluir mínimo un servicio.');
+            }
 
+            addEventeButtons();
+        });
+    }
+}
 crear.addEventListener('click', () =>nuevoSelect());
 
 guardar.addEventListener('click', async ()=>{
@@ -106,6 +120,6 @@ guardar.addEventListener('click', async ()=>{
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
+    addEventeButtons();
     await getServicios();
-    nuevoSelect();
 });

@@ -14,51 +14,48 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Correo</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">NIT</th>
-                    <th scope="col">Rol</th>
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Fecha realización</th>
+                    <th scope="col">Fecha vencimineto</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Estado</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
             <?php
-                if(isset($this->usuarios)){
-                    foreach($this->usuarios as $usuario){
+                if(isset($this->cotizaciones)){
+                    foreach($this->cotizaciones as $cotizacion){
             ?>
-                <tr>
-                    <td><?php echo $usuario->email; ?></td>
-                    <td><?php echo $usuario->nombres; ?></td>
-                    <td><?php echo $usuario->nit; ?></td>
-                    <td>
-                        <?php if($usuario->rol == 'admin'){ ?>
-                            <i class="fas fa-user-tie" title="Administrador"></i>
-                        <?php }else{ ?>
-                            <i class="fas fa-user" title="Usuario"></i>
-                        <?php } ?>
-                    </td>
-                    <td id="botones-<?php echo $usuario->id?>">
-                        <a class="btn btn-outline-primary btn-sm" href="<?php echo URL?>/usuarios/editar/<?php echo $usuario->id?>">
-                            <!-- <i class="fas fa-user-edit"></i> -->
-                            Editar
-                        </a>
+                <tr id="<? echo $cotizacion->id?>">
+                    <td><?php echo $cotizacion->nombres. " (". $cotizacion->nit.")"; ?></td>
+                    <td><?php echo $cotizacion->fecha_realizacion; ?></td>
+                    <td><?php echo $cotizacion->fecha_vencimiento; ?></td>
+                    <td><?php echo $cotizacion->descripcion; ?></td>
                         <?php
-                            if($usuario->estado == 'activo'){
-                        ?>
-                            <button class="btn btn-outline-danger btn-sm btn-estado" id="<?php echo $usuario->id?>" data-estado="<?php echo $usuario->estado; ?>">
-                                <!-- <i class="fas fa-user-slash"></i> -->
-                                Desactivar
-                            </button>
-                        <?php 
-                            }else{
-                        ?>
-                            <button class="btn btn-outline-success btn-sm btn-estado" id="<?php echo $usuario->id?>" data-estado="<?php echo $usuario->estado; ?>">
-                                <!-- <i class="fas fa-user"></i> -->
-                                Activar
-                            </button>
-                        <?php
+                            $tipo = '';
+                            switch ($cotizacion->estado) {
+                                case 'En Solicitud':
+                                    $tipo = 'info';
+                                    break;
+                                case 'En proceso':
+                                    $tipo = 'primary';
+                                    break;
+                                case 'Aceptada':
+                                    $tipo = 'success';
+                                    break;
+                                default:
+                                    $tipo = 'danger';
+                                    break;
                             }
                         ?>
+                    <td class="text-<?echo $tipo ?>">
+                            <?php echo $cotizacion->estado; ?>
+                    </td>
+                    <td id="botones-<?php echo $cotizacion->id?>">
+                        <a class="btn btn-outline-primary btn-sm" href="<?php echo URL?>/cotizaciones/editar/<?php echo $cotizacion->id?>">
+                            Editar
+                        </a>
                     </td>
                 </tr>
             <?php
