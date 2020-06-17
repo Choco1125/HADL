@@ -74,7 +74,7 @@
                 ?>
             </div>
             <div class="row justify-content-center">
-                <button class="btn btn-primary mb-3 col-10" id="btn-guardar">Actualizar</button>   
+                <button class="btn btn-primary mb-3 col-10" id="btn-guardar" data-cotizacion="<?php echo $this->cotizacion['cotizaciondId'] ?>">Actualizar</button>   
             </div>
         </div>
     </div>

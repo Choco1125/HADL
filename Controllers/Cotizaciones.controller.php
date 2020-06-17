@@ -103,4 +103,34 @@
                 header('location:'.URL.'/cotizaciones');
             }   
         }
+
+        public function update()
+        {
+            $id = $this->set_value($_POST['cotizacionId']);
+            $cliente = $this->set_value($_POST['cliente']);
+            $descripcion = $this->set_value($_POST['descripcion']); 
+            $estado = $this->set_value($_POST['estado']);
+            $servicos = $this->set_value($_POST['servicios']);
+            $fecha_vencimiento = $this->set_value($_POST['fecha_vencimiento']);
+            
+            $servicios = explode(',',$servicos);
+            $this->load_model('Cotizacion');
+            $cotizacion = new Cotizacion($id,$cliente,null,$fecha_vencimiento,$descripcion,$estado);
+            $guardar = $cotizacion->actualizar();
+
+            if($guardar == ['ok']){
+                $cotizacion->eliminar_servicios();
+                foreach($servicios as $servicio){
+                    $cotizacion->agregar_servicio($servicio);       
+                }
+                echo json_encode([
+                    'status'=>200
+                ]);
+            }else{
+                echo json_encode([
+                    'status' => 400,
+                    'error' => $guardar
+                ]);
+            }
+        }
     }

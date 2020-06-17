@@ -101,7 +101,6 @@ guardar.addEventListener('click', async ()=>{
         formData.append('fechaEntrega',fechaEntrega.value);
 
         Spinner.start('btn-guardar');
-        console.log(solicitudId);
         
         let res = await consumidor.post('servicios','actualizar_solicitud',formData);
         Spinner.end('btn-guardar');

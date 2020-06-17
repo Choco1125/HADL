@@ -89,8 +89,11 @@ guardar.addEventListener('click', async ()=>{
     if(datos.length > 0){
         let descripcion = document.getElementById('descripcion');
         let estado = document.getElementById('estado');
+        let cotizacionId =  guardar.dataset.cotizacion;
+
         let formData = new FormData();
 
+        formData.append('cotizacionId',cotizacionId);
         formData.append('cliente',usuario.value);
         formData.append('descripcion',descripcion.value);
         formData.append('estado',estado.value);
@@ -98,11 +101,11 @@ guardar.addEventListener('click', async ()=>{
         formData.append('servicios',datos);
 
         Spinner.start('btn-guardar');
-        let res = await consumidor.post('cotizaciones','storage',formData);
+        let res = await consumidor.post('cotizaciones','update',formData);
         Spinner.end('btn-guardar');
         
         switch (res.status) {
-            case 201:
+            case 200:
                 location.href = `${appLinkDomain}/cotizaciones`; 
                 break;
             case 400:

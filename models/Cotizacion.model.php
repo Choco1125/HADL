@@ -83,7 +83,7 @@
         public function seleccionar_todos()
         {
             try {
-                $consulta = "SELECT cotizacion.id, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id";
+                $consulta = "SELECT cotizacion.id, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id ORDER BY cotizacion.id DESC";
                 $sql = $this->db_connection->query($consulta);
 
                 $resulset = [];
@@ -138,6 +138,40 @@
             }
         }
 
+        public function eliminar_servicios()
+        {
+            try {
+                $consulta = "DELETE FROM cotizacion_serivicio WHERE cotizacion_id = :cotizacion_id";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    'cotizacion_id' => $this->id
+                ]);
+            } catch (PDOException $ex) {
+                return [
+                    'error' => $ex->errorInfo
+                ];
+            }
+        }
+
+        public function actualizar()
+        {
+            try {
+                $consulta = "UPDATE cotizacion SET usuario_id = :usuario_id,fecha_vencimiento = :fecha_vencimiento,descripcion = :descripcion,estado = :estado WHERE id = :id";
+                $sql = $this->db_connection->prepare($consulta);
+                $sql->execute([
+                    'usuario_id'=> $this->get_usuario(),
+                    'fecha_vencimiento'=> $this->get_fecha_vencimiento(),
+                    'descripcion'=> $this->get_descripcion(),
+                    'estado'=> $this->get_estado(),
+                    'id'=> $this->get_id()
+                ]);
+                return ['ok'];
+            } catch (PDOException $ex) {
+                return [
+                    'error' => $ex->errorInfo
+                ];
+            }
+        }
         public function mis_datos()
         {
             try {
