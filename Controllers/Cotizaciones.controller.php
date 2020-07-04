@@ -99,12 +99,16 @@ class Cotizaciones extends Controller
         if (isset($id)) {
 
             $this->load_model('Cotizacion');
+
             $cotizacion = new Cotizacion();
             $cotizacion->set_id($id);
 
             $buscar = $cotizacion->mis_datos();
 
-
+            if($_SESSION['rol'] == 'user' && $_SESSION['id'] != $buscar[0]['usuarioId']){
+                header('location: '.URL.'/cotizaciones');
+            }
+            
             if (!is_null($buscar)) {
 
                 $this->load_model('Usuario');
@@ -119,14 +123,25 @@ class Cotizaciones extends Controller
 
                 $this->view->servicios = $servicios->seleccionar_todos();
 
-                $this->view->scripts = [
-                    'libs/erro.js',
-                    'libs/peticiones.js',
-                    'libs/alerta.js',
-                    'libs/spinner.js',
-                    'cotizacion/editar.js'
-                ];
-                $this->view->render('admin/cotizacion/editar');
+                if($_SESSION['rol'] == 'user'){
+                    $this->view->scripts = [
+                        'libs/erro.js',
+                        'libs/peticiones.js',
+                        'libs/alerta.js',
+                        'libs/spinner.js',
+                        'cotizacion/user/editar.js'
+                    ];
+                }else{
+                    $this->view->scripts = [
+                        'libs/erro.js',
+                        'libs/peticiones.js',
+                        'libs/alerta.js',
+                        'libs/spinner.js',
+                        'cotizacion/editar.js'
+                    ];
+                }
+
+                $this->view->render( $_SESSION['rol'] == 'admin' ? 'admin/cotizacion/editar' : 'user/cotizacion/editar');
             } else {
                 header('location:' . URL . '/cotizaciones');
             }
@@ -138,11 +153,11 @@ class Cotizaciones extends Controller
     public function update()
     {
         $id = $this->set_value($_POST['cotizacionId']);
-        $cliente = $this->set_value($_POST['cliente']);
+        $cliente = isset($_POST['cliente']) ? $this->set_value($_POST['cliente']) : '';
         $descripcion = $this->set_value($_POST['descripcion']);
-        $estado = $this->set_value($_POST['estado']);
+        $estado = isset($_POST['estado']) ? $this->set_value($_POST['estado']) : '';
         $servicos = $this->set_value($_POST['servicios']);
-        $fecha_vencimiento = $this->set_value($_POST['fecha_vencimiento']);
+        $fecha_vencimiento = isset($_POST['fecha_vencimiento']) ? $this->set_value($_POST['fecha_vencimiento']) : '';
 
         $servicios = explode(',', $servicos);
         $this->load_model('Cotizacion');
@@ -166,22 +181,22 @@ class Cotizaciones extends Controller
     }
 
     public function delete(){
-	$id = $_POST['id'];
-	$this->load_model('Cotizacion');
-	$cotizacion = new Cotizacion();
-	$cotizacion->set_id($id);
+        $id = $_POST['id'];
+        $this->load_model('Cotizacion');
+        $cotizacion = new Cotizacion();
+        $cotizacion->set_id($id);
 
-	$delete = $cotizacion->delete();
-	
-	if($delete == ['ok']){
-	  echo json_encode([
-	  	'status' => 200
-	  ]);
-	}else{
-	  echo json_encode([
-	  	'status' => 500,
-		'error' => $delete['error']
-	  ]);
-	}
+        $delete = $cotizacion->delete();
+        
+        if($delete == ['ok']){
+            echo json_encode([
+                'status' => 200
+            ]);
+        }else{
+            echo json_encode([
+                'status' => 500,
+                'error' => $delete['error']
+            ]);
+        }
     }
 }

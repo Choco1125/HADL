@@ -71,7 +71,6 @@ crear.addEventListener('click', () =>nuevoSelect());
 
 guardar.addEventListener('click', async ()=>{
     let selects = document.getElementsByName('servicios');
-    let usuario = document.getElementById('usuario');
 
     let datos = [];
 
@@ -81,23 +80,14 @@ guardar.addEventListener('click', async ()=>{
         }
     }
 
-    if(usuario.value == ''){
-        datos = [];
-        Erro.set('usuario_group','Debes seleccionar un cliente');
-    }
-
     if(datos.length > 0){
         let descripcion = document.getElementById('descripcion');
-        let estado = document.getElementById('estado');
         let cotizacionId =  guardar.dataset.cotizacion;
 
         let formData = new FormData();
 
         formData.append('cotizacionId',cotizacionId);
-        formData.append('cliente',usuario.value);
         formData.append('descripcion',descripcion.value);
-        formData.append('estado',estado.value);
-        formData.append('fecha_vencimiento',fecha_vencimiento.value);
         formData.append('servicios',datos);
 
         Spinner.start('btn-guardar');

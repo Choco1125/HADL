@@ -164,15 +164,27 @@ class Cotizacion extends Model
     public function actualizar()
     {
         try {
-            $consulta = "UPDATE cotizacion SET usuario_id = :usuario_id,fecha_vencimiento = :fecha_vencimiento,descripcion = :descripcion,estado = :estado WHERE id = :id";
+            if($_SESSION['rol'] == 'user'){
+                $consulta = "UPDATE cotizacion SET descripcion = :descripcion WHERE id = :id";
+            }else{
+                $consulta = "UPDATE cotizacion SET usuario_id = :usuario_id,fecha_vencimiento = :fecha_vencimiento,descripcion = :descripcion,estado = :estado WHERE id = :id";
+            }
             $sql = $this->db_connection->prepare($consulta);
-            $sql->execute([
-                'usuario_id' => $this->get_usuario(),
-                'fecha_vencimiento' => $this->get_fecha_vencimiento(),
-                'descripcion' => $this->get_descripcion(),
-                'estado' => $this->get_estado(),
-                'id' => $this->get_id()
-            ]);
+
+            if($_SESSION['rol'] == 'user'){
+                $sql->execute([
+                    'descripcion' => $this->get_descripcion(),
+                    'id' => $this->get_id()
+                ]);
+            }else{
+                $sql->execute([
+                    'usuario_id' => $this->get_usuario(),
+                    'fecha_vencimiento' => $this->get_fecha_vencimiento(),
+                    'descripcion' => $this->get_descripcion(),
+                    'estado' => $this->get_estado(),
+                    'id' => $this->get_id()
+                ]);
+            }
             return ['ok'];
         } catch (PDOException $ex) {
             return [

@@ -9,36 +9,13 @@
     <div class="row justify-content-center mb-3">
         <div class="card col-md-8 rounded">
             <div class="card-body form-row">
-                <div class="form-group col-md-6 col-12"  id="usuario_group">
-                    <label for="usuario">Cliene:</label>
-                    <select name="usuario" id="usuario" class="custom-select">
-                        <option value="">Selecciona un cliente</option>
-                        <?php
-                            if(isset($this->clientes)){
-                                foreach($this->clientes as $cliente){
-                        ?>
-                                    <option value="<?echo $cliente->id?>"  <?php echo $this->cotizacion['usuarioId'] == $cliente->id ? 'selected' :'' ?> ><?php echo $cliente->nombres .' - (' .$cliente->nit. ')' ?></option>
-                        <?php
-                                }
-                            }
-                        ?>
-                    </select>
-                    <span class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-3 col-12"  id="estado_group">
+                <div class="form-group col-md-6 col-12">
                     <label for="estado">Estado</label>
-                    <select name="estado" id="estado" class="custom-select">
-                        <option value="En Solicitud" <?php echo $this->cotizacion['estado'] == 'En Solicitud' ? 'selected' :'' ?>>En solicitud</option>
-                        <option value="En proceso" <?php echo $this->cotizacion['estado'] == 'En proceso' ? 'selected' :'' ?>>En proceso</option>
-                        <option value="Aceptada" <?php echo $this->cotizacion['estado'] == 'Aceptada' ? 'selected' :'' ?>>Aceptada</option>
-                        <option value="Rechazada" <?php echo $this->cotizacion['estado'] == 'Rechazada' ? 'selected' :'' ?>>Rechazada</option>
-                    </select>
-                    <span class="text-danger"></span>
+                    <p><?php echo $this->cotizacion['estado'] ?></p> 
                 </div>
-                <div class="form-group col-md-3 col-12"  id="fecha_vencimiento_group">
+                <div class="form-group col-md-6 col-12"  id="fecha_vencimiento_group">
                     <label for="fecha_vencimiento">Fecha vencimiento</label>
-                    <input type="date" class="form-control" id="fecha_vencimiento" value="<?php echo $this->cotizacion['fecha_vencimiento']?>">
-                    <span class="text-danger"></span>
+                    <p><?php echo $this->cotizacion['fecha_vencimiento'] ?></p>
                 </div>
             </div>
         </div>
@@ -74,7 +51,16 @@
                 ?>
             </div>
             <div class="row justify-content-center">
-                <button class="btn btn-primary mb-3 col-10" id="btn-guardar" data-cotizacion="<?php echo $this->cotizacion['cotizaciondId'] ?>">Actualizar</button>   
+                <button 
+                    class="btn btn-primary mb-3 col-10" 
+                    id="btn-guardar" 
+                    data-cotizacion="<?php echo $this->cotizacion['cotizaciondId'] ?>"
+                    data-usuario="<?php echo $this->cotizacion['usuarioId']?>"
+                    data-estado="<?php echo $this->cotizacion['estado']?>"
+                    data-fecha_vencimiento="<?php echo $this->cotizacion['fecha_vencimiento']?>"
+                >
+                    Actualizar
+                </button>   
             </div>
         </div>
     </div>
