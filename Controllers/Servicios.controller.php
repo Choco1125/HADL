@@ -39,16 +39,17 @@
                 'libs/erro.js',
                 'libs/alerta.js',
                 'libs/spinner.js',
-                'servicios/solicitud/crear.js'
+                $_SESSION['rol'] == 'user' ? 'servicios/solicitud/user/crear.js' : 'servicios/solicitud/crear.js'
+                
             ];
-            $this->view->render('admin/servicios/solicitud/crear');
+            $this->view->render( $_SESSION['rol'] == 'user' ? 'user/servicios/solicitud/crear' : 'admin/servicios/solicitud/crear');
         }
 
         public function crea_solicitud(){
 
-            $cliente = $this->set_value($_POST['cliente']);
+            $cliente = $_SESSION['rol'] == 'user' ? $_SESSION['id'] :$this->set_value($_POST['cliente']);
             $descripcion = $this->set_value($_POST['descripcion']); 
-            $fecha_entrega = $this->set_value($_POST['fechaEntrega']);
+            $fecha_entrega =  $_SESSION['rol'] == 'user' ? null : $this->set_value($_POST['fechaEntrega']);
             $servicos = $this->set_value($_POST['servicios']);
             
             $servicios = explode(',',$servicos);
@@ -58,9 +59,8 @@
             $guardar = $solicitud->crear();
             
             if($guardar == ['ok']){
-                $test = [];
                 foreach($servicios as $servicio){
-                    $solicitud->agregar_servicio($servicio);       
+                    $solicitud->agregar_servicio($servicio);
                 }
                 echo json_encode([
                     'status'=>201
