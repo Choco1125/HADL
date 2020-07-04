@@ -25,9 +25,8 @@ btnEliminar.addEventListener('click',async ()=>{
     Spinner.end('btn-eliminar');
 
     if(res.status == 200){
-        Alerta.show('success','Servicio eliminado');
+        Alerta.show('success','Solicitud de servicio eliminada');
         $('#eliminar').modal('hide');
-        console.log(btnEliminar.dataset.id);
         eliminarFila(btnEliminar.dataset.id);
     }else{
         console.log(res);
