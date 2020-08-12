@@ -395,11 +395,15 @@ class Servicios extends Controller
         $solicitud = new Solicitud();
         $solicitud->set_id($servicio_id);
         $datos = $solicitud->mis_dato();
+
+        // echo '<pre>';
         // var_dump($datos);
-        $this->crear_pdf();
+        // echo '</pre>';
+
+        $this->crear_pdf($datos);
     }
 
-    private function crear_pdf()
+    private function crear_pdf($datos)
     {
         require 'libs/pdf/pdf.php';
         $pdf = new PDF();
@@ -407,6 +411,56 @@ class Servicios extends Controller
         $pdf->AliasNbPages();
         $pdf->SetFont('Helvetica', 'B', 14);
         $pdf->Cell(0, 10, 'Solicitud de servicio', 0, 1, 'C');
+        //Fechas
+        $pdf->Ln(10);
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->Cell(35, 5, utf8_decode('Solicitud Nro:'));
+        $pdf->SetFont('Helvetica', '', 12);
+        $pdf->Cell(0, 5, $datos[0]['solicitudId'], 0, 1);
+        $pdf->Ln(5);
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->Cell(35, 5, utf8_decode('Fecha creación:'));
+        $pdf->SetFont('Helvetica', '', 12);
+        $pdf->Cell(0, 5, $datos[0]['fecha_creacion'], 0, 1);
+        $pdf->Ln(2);
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->Cell(35, 5, utf8_decode('Fecha entrega:'));
+        $pdf->SetFont('Helvetica', '', 12);
+        $pdf->Cell(0, 5, $datos[0]['fecha_entrega'], 0, 1);
+        //Usuario
+        $pdf->Ln(2);
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->Cell(35, 5, utf8_decode('Usuario:'));
+        $pdf->SetFont('Helvetica', '', 12);
+        $pdf->Cell(0, 5, $datos[0]['nombres'], 0, 1);
+        //NIT
+        $pdf->Ln(2);
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->Cell(35, 5, utf8_decode('NIT:'));
+        $pdf->SetFont('Helvetica', '', 12);
+        $pdf->Cell(0, 5, $datos[0]['nit'], 0, 1);
+        //Descripción
+        $pdf->Ln(5);
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->Cell(0, 5, utf8_decode('Descripción: '), 0, 1);
+        $pdf->Ln(2);
+        $pdf->SetFont('Helvetica', '', 12);
+        $pdf->MultiCell(0, 5, utf8_decode($datos[0]['descripcion']));
+        //Servicios
+        $pdf->Ln(5);
+        $pdf->SetFont('Helvetica', 'B', 15);
+        $pdf->Cell(0, 10, 'Lista de servicios', 0, 1, 'C');
+        $pdf->Ln(2);
+
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->Cell(95, 7, 'Servicio', 1, 0, 'C');
+        $pdf->Cell(0, 7, 'Precio', 1, 1, 'C');
+
+        $pdf->SetFont('Helvetica', '', 12);
+        for ($i = 0; $i < count($datos[0]['servicios']); $i++) {
+            $pdf->Cell(95, 7, utf8_decode($datos[0]['servicios'][$i]['nombre']), 1, 0, 'C');
+            $pdf->Cell(0, 7, utf8_decode($datos[0]['servicios'][$i]['precio']), 1, 1, 'C');
+        }
         $pdf->Output();
     }
     //---------------------------------------------------------------------

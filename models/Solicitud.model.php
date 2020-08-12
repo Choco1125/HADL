@@ -128,7 +128,7 @@ class Solicitud extends Model
   public function mis_dato()
   {
     try {
-      $consulta = "SELECT solicitud.id AS solicitudId, solicitud.fecha_creacion, solicitud.fecha_entrega, solicitud.descripcion, usuario.id AS usuarioId FROM solicitud INNER JOIN usuario ON solicitud.usuario_id = usuario.id WHERE solicitud.id = :solicitud_id";
+      $consulta = "SELECT solicitud.id AS solicitudId, solicitud.fecha_creacion, solicitud.fecha_entrega, solicitud.descripcion, usuario.id AS usuarioId, usuario.nombres, usuario.nit FROM solicitud INNER JOIN usuario ON solicitud.usuario_id = usuario.id WHERE solicitud.id = :solicitud_id";
       $sql = $this->db_connection->prepare($consulta);
       $sql->execute([
         ':solicitud_id' => $this->id
@@ -141,7 +141,7 @@ class Solicitud extends Model
 
       for ($i = 0; $i < count($servicios); $i++) {
 
-        $consulta = "SELECT servicio.nombre,solicitud_servico.servicio_id FROM servicio INNER JOIN solicitud_servico ON servicio.id = solicitud_servico.servicio_id WHERE solicitud_servico.solicitud_id = :solicitud_id";
+        $consulta = "SELECT servicio.nombre,solicitud_servico.servicio_id,servicio.precio FROM servicio INNER JOIN solicitud_servico ON servicio.id = solicitud_servico.servicio_id WHERE solicitud_servico.solicitud_id = :solicitud_id";
         $sql = $this->db_connection->prepare($consulta);
         $sql->execute([
           ':solicitud_id' => $this->id
