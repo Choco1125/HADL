@@ -395,11 +395,6 @@ class Servicios extends Controller
         $solicitud = new Solicitud();
         $solicitud->set_id($servicio_id);
         $datos = $solicitud->mis_dato();
-
-        // echo '<pre>';
-        // var_dump($datos);
-        // echo '</pre>';
-
         $this->crear_pdf($datos);
     }
 

@@ -31,13 +31,13 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
                             <td><?php echo $solicitud['descripcion']; ?></td>
                             <td><?php echo $solicitud['nombres'] . "( " . $solicitud['nit'] . " )"; ?></td>
                             <td id="botones-<?php echo $solicitud['id'] ?>">
-                                <a class="btn btn-outline-success btn-sm mt-2" href="<?php echo URL ?>/servicios/ver_servicios/<?php echo $solicitud['solicitudId'] ?>" target="_blank">
+                                <a class="btn btn-outline-success btn-sm mt-2 col-12" href="<?php echo URL ?>/servicios/ver_servicios/<?php echo $solicitud['solicitudId'] ?>" target="_blank">
                                     Ver
                                 </a>
-                                <a class="btn btn-outline-primary btn-sm mt-2" href="<?php echo URL ?>/servicios/editar_solicitud/<?php echo $solicitud['solicitudId'] ?>">
+                                <a class="btn btn-outline-primary btn-sm mt-2 col-12" href="<?php echo URL ?>/servicios/editar_solicitud/<?php echo $solicitud['solicitudId'] ?>">
                                     Editar
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm mt-2" data-id="<?php echo $solicitud['solicitudId'] ?>" data-toggle="modal" data-target="#eliminar" id="tbl-eliminar">
+                                <button class="btn btn-outline-danger btn-sm mt-2 col-12" data-id="<?php echo $solicitud['solicitudId'] ?>" data-toggle="modal" data-target="#eliminar" id="tbl-eliminar">
                                     Eliminar
                                 </button>
                             </td>
