@@ -452,10 +452,15 @@ class Servicios extends Controller
         $pdf->Cell(0, 7, 'Precio', 1, 1, 'C');
 
         $pdf->SetFont('Helvetica', '', 12);
+        $total = 0;
         for ($i = 0; $i < count($datos[0]['servicios']); $i++) {
+            $total += $datos[0]['servicios'][$i]['precio'];
             $pdf->Cell(95, 7, utf8_decode($datos[0]['servicios'][$i]['nombre']), 1, 0, 'C');
             $pdf->Cell(0, 7, utf8_decode($datos[0]['servicios'][$i]['precio']), 1, 1, 'C');
         }
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->Cell(95, 7, 'Total', 1, 0, 'C');
+        $pdf->Cell(0, 7, $total, 1, 1, 'C');
         $pdf->Output();
     }
     //---------------------------------------------------------------------
