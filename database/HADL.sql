@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-06-2020 a las 06:44:52
+-- Tiempo de generación: 13-08-2020 a las 18:45:38
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.6
 
@@ -108,7 +108,8 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `email`, `nombres`, `password`, `rol`, `nit`, `celular`, `direccion`, `estado`) VALUES
-(1, 'choco@mail.com', 'Choco', '123', 'admin', '', '', '', 'activo');
+(1, 'choco@mail.com', 'Choco', '123', 'admin', '', '', '', 'activo'),
+(2, 'kevinDanga@mail.com', 'Kevin Danga', '5f356d393fa94', 'user', '9009765-4', '3114567098', 'cll 48h 4f 32 Manizales', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -180,7 +181,7 @@ ALTER TABLE `solicitud`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -196,8 +197,8 @@ ALTER TABLE `cotizacion`
 -- Filtros para la tabla `cotizacion_serivicio`
 --
 ALTER TABLE `cotizacion_serivicio`
-  ADD CONSTRAINT `cotizacion_serivicio_ibfk_1` FOREIGN KEY (`cotizacion_id`) REFERENCES `cotizacion` (`id`),
-  ADD CONSTRAINT `cotizacion_serivicio_ibfk_2` FOREIGN KEY (`servicio_id`) REFERENCES `servicio` (`id`);
+  ADD CONSTRAINT `cotizacion_serivicio_ibfk_3` FOREIGN KEY (`cotizacion_id`) REFERENCES `cotizacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cotizacion_serivicio_ibfk_4` FOREIGN KEY (`servicio_id`) REFERENCES `servicio` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `solicitud`
