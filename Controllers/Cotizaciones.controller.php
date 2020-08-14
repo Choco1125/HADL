@@ -50,7 +50,7 @@ class Cotizaciones extends Controller
         'libs/erro.js',
         'libs/alerta.js',
         'libs/spinner.js',
-        'cotizacion/crear.js'
+        'cotizacion/user/crear.js'
       ];
       $this->view->render('user/cotizacion/crear');
     }
@@ -64,8 +64,8 @@ class Cotizaciones extends Controller
       $fecha_vencimiento = $this->set_value($_POST['fecha_vencimiento']);
     } else {
       $cliente = $_SESSION['id'];
-      $estado = "";
-      $fecha_vencimiento = $this->set_value($_POST['fecha_vencimiento']);
+      $estado = "En Solicitud";
+      $fecha_vencimiento = isset($_POST['fecha_vencimiento']) ? $_POST['fecha_vencimiento'] : '';
     }
 
     $descripcion = $this->set_value($_POST['descripcion']);

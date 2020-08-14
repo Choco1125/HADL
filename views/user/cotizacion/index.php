@@ -1,6 +1,6 @@
 <?php
-    require 'views/layout/head.php';
-    require 'views/layout/'.$_SESSION['rol'].'_menu.php';
+require 'views/layout/head.php';
+require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
 ?>
 
 <div class="container">
@@ -17,22 +17,22 @@
                     <th scope="col">Usuario</th>
                     <th scope="col">Fecha realización</th>
                     <th scope="col">Fecha vencimineto</th>
-                    <th scope="col">Descripción</th>
+                    <th scope="col-lg-5">Descripción</th>
                     <th scope="col">Estado</th>
-                    <th scope="col"></th>
+                    <th scope="col-lg-1"></th>
                 </tr>
             </thead>
-            <tbody>
-            <?php
-                if(isset($this->cotizaciones)){
-                    foreach($this->cotizaciones as $cotizacion){
-            ?>
-                <tr id="<? echo $cotizacion->id?>">
-                    <td><?php echo $cotizacion->nombres. " (". $cotizacion->nit.")"; ?></td>
-                    <td><?php echo $cotizacion->fecha_realizacion; ?></td>
-                    <td><?php echo $cotizacion->fecha_vencimiento; ?></td>
-                    <td><?php echo $cotizacion->descripcion; ?></td>
-                        <?php
+            <tbody id="tbl">
+                <?php
+                if (isset($this->cotizaciones)) {
+                    foreach ($this->cotizaciones as $cotizacion) {
+                ?>
+                        <tr id="<? echo $cotizacion->id?>">
+                            <td><?php echo $cotizacion->nombres . " (" . $cotizacion->nit . ")"; ?></td>
+                            <td><?php echo $cotizacion->fecha_realizacion; ?></td>
+                            <td><?php echo $cotizacion->fecha_vencimiento; ?></td>
+                            <td><?php echo $cotizacion->descripcion; ?></td>
+                            <?php
                             $tipo = '';
                             switch ($cotizacion->estado) {
                                 case 'En Solicitud':
@@ -48,25 +48,45 @@
                                     $tipo = 'danger';
                                     break;
                             }
-                        ?>
-                    <td class="text-<?echo $tipo ?>">
-                            <?php echo $cotizacion->estado; ?>
-                    </td>
-                    <td id="botones-<?php echo $cotizacion->id?>">
-                        <a class="btn btn-outline-primary btn-sm" href="<?php echo URL?>/cotizaciones/editar/<?php echo $cotizacion->id?>">
-                            Editar
-                        </a>
-                    </td>
-                </tr>
-            <?php
+                            ?>
+                            <td class="text-<?echo $tipo ?>">
+                                <?php echo $cotizacion->estado; ?>
+                            </td>
+                            <td id="botones-<?php echo $cotizacion->id ?>">
+                                <a class="btn btn-outline-success btn-sm col-12" href="<?php echo URL ?>/cotizaciones/ver/<?php echo $cotizacion->id ?>" target="_blank">
+                                    Ver
+                                </a>
+                                <a class="btn btn-outline-primary btn-sm col-12 mt-2" href="<?php echo URL ?>/cotizaciones/editar/<?php echo $cotizacion->id ?>">
+                                    Editar
+                                </a>
+                            </td>
+                        </tr>
+                <?php
                     }
                 }
-            ?>
+                ?>
             </tbody>
         </table>
+    </div>
+
+    <div class="modal fade" id="eliminar" tabindex="-1" role="dialog" aria-labelledby="eliminarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="eliminarLabel">¿Deseas eliminar esta cotización?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="btn-eliminar">Sí, eliminar </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <?php
-    require 'views/layout/foot.php';
+require 'views/layout/foot.php';
 ?>
