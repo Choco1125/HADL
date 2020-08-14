@@ -164,19 +164,19 @@ class Cotizacion extends Model
     public function actualizar()
     {
         try {
-            if($_SESSION['rol'] == 'user'){
+            if ($_SESSION['rol'] == 'user') {
                 $consulta = "UPDATE cotizacion SET descripcion = :descripcion WHERE id = :id";
-            }else{
+            } else {
                 $consulta = "UPDATE cotizacion SET usuario_id = :usuario_id,fecha_vencimiento = :fecha_vencimiento,descripcion = :descripcion,estado = :estado WHERE id = :id";
             }
             $sql = $this->db_connection->prepare($consulta);
 
-            if($_SESSION['rol'] == 'user'){
+            if ($_SESSION['rol'] == 'user') {
                 $sql->execute([
                     'descripcion' => $this->get_descripcion(),
                     'id' => $this->get_id()
                 ]);
-            }else{
+            } else {
                 $sql->execute([
                     'usuario_id' => $this->get_usuario(),
                     'fecha_vencimiento' => $this->get_fecha_vencimiento(),
@@ -195,7 +195,7 @@ class Cotizacion extends Model
     public function mis_datos()
     {
         try {
-            $consulta = "SELECT cotizacion.id AS cotizaciondId, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.id AS usuarioId FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id WHERE cotizacion.id = :cotizacion_id ";
+            $consulta = "SELECT cotizacion.id AS cotizaciondId, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.id AS usuarioId, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id WHERE cotizacion.id = :cotizacion_id ";
             $sql = $this->db_connection->prepare($consulta);
             $sql->execute([
                 ':cotizacion_id' => $this->id
@@ -208,7 +208,7 @@ class Cotizacion extends Model
 
             for ($i = 0; $i < count($servicios); $i++) {
 
-                $consulta = "SELECT servicio.nombre, cotizacion_serivicio.servicio_id FROM servicio INNER JOIN cotizacion_serivicio ON servicio.id = cotizacion_serivicio.servicio_id WHERE cotizacion_serivicio.cotizacion_id = :cotizacion_id";
+                $consulta = "SELECT servicio.nombre, cotizacion_serivicio.servicio_id, servicio.precio FROM servicio INNER JOIN cotizacion_serivicio ON servicio.id = cotizacion_serivicio.servicio_id WHERE cotizacion_serivicio.cotizacion_id = :cotizacion_id";
                 $sql = $this->db_connection->prepare($consulta);
                 $sql->execute([
                     ':cotizacion_id' => $this->id
@@ -225,18 +225,18 @@ class Cotizacion extends Model
     }
 
 
-    public function delete(){
-      try{
-	$query = "DELETE FROM cotizacion WHERE id = :id";
-	$sql = $this->db_connection->prepare($query);
-	$sql->execute([
-	  ':id' => $this->id
-	]);
+    public function delete()
+    {
+        try {
+            $query = "DELETE FROM cotizacion WHERE id = :id";
+            $sql = $this->db_connection->prepare($query);
+            $sql->execute([
+                ':id' => $this->id
+            ]);
 
-	return ['ok'];
-      }Catch(PDOException $ex){
-	return ['error' => $ex->errorInfo];
-      }
-
+            return ['ok'];
+        } catch (PDOException $ex) {
+            return ['error' => $ex->errorInfo];
+        }
     }
 }

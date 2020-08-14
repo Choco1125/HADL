@@ -16,8 +16,8 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
                     <th>Fecha creación</th>
                     <th>Fecha entrega</th>
                     <th>Descripción</th>
-                    <th class="col-lg-3">Cliente</th>
-                    <th></th>
+                    <th class="col-lg-4">Cliente</th>
+                    <th class="col-lg-1"></th>
                 </tr>
             </thead>
             <tbody id="tbl">
