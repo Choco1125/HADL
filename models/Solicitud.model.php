@@ -112,8 +112,16 @@ class Solicitud extends Model
   public function tarer_todos()
   {
     try {
-      $consulta = "SELECT solicitud.id AS solicitudId, solicitud.fecha_creacion, solicitud.fecha_entrega, solicitud.descripcion, usuario.nombres, usuario.nit FROM solicitud INNER JOIN usuario ON solicitud.usuario_id = usuario.id ORDER BY solicitud.id DESC";
-      $sql = $this->db_connection->query($consulta);
+      if (is_null($this->usuario_id)) {
+        $consulta = "SELECT solicitud.id AS solicitudId, solicitud.fecha_creacion, solicitud.fecha_entrega, solicitud.descripcion, usuario.nombres, usuario.nit FROM solicitud INNER JOIN usuario ON solicitud.usuario_id = usuario.id ORDER BY solicitud.id DESC";
+        $sql = $this->db_connection->query($consulta);
+      } else {
+        $consulta = "SELECT solicitud.id AS solicitudId, solicitud.fecha_creacion, solicitud.fecha_entrega, solicitud.descripcion, usuario.nombres, usuario.nit FROM solicitud INNER JOIN usuario ON solicitud.usuario_id = usuario.id AND usuario_id = :usuario_id ORDER BY solicitud.id DESC";
+        $sql = $this->db_connection->prepare($consulta);
+        $sql->execute([
+          'usuario_id' => $this->usuario_id
+        ]);
+      }
       $servicios = null;
 
       while ($servicio = $sql->fetch(PDO::FETCH_ASSOC)) {
