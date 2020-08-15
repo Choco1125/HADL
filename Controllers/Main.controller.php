@@ -52,7 +52,7 @@ class Main extends Controller
         } else if (!$this->is_email($correo)) {
             array_push($errores, [
                 'input' => 'email',
-                'mensaje' => 'Debes ingresar un valor'
+                'mensaje' => 'Debes ingresar un correo válido'
             ]);
         }
 

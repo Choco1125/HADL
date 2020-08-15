@@ -25,7 +25,7 @@ require 'views/layout/head.php';
                 </button>
 
 
-                <a href="#" class="text-center d-block col-12 mt-2">Solicitar mi cuenta</a>
+                <a href="<?php echo URL ?>/registrarse" class="text-center d-block col-12 mt-2">Solicitar mi cuenta</a>
             </div>
         </div>
     </div>
