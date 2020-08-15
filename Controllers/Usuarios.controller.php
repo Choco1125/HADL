@@ -90,8 +90,8 @@ class Usuarios extends Controller
             $usuario->set_nit($nit);
             $usuario->set_direccion($direccion);
             $usuario->set_celular($celular);
-            // $usuario->set_password(password_hash(uniqid(),PASSWORD_DEFAULT));
-            $usuario->set_password(uniqid());
+						$pass = uniqid();
+            $usuario->set_password(password_hash($pass,PASSWORD_DEFAULT));
 
             $guardar = $usuario->crear();
 

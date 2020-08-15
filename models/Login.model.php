@@ -82,6 +82,7 @@ class Login extends Model
 
     public function is_valid_password($password)
     {
-        return ($this->password == $password);
+				return password_verify($password,$this->password);
+        //return ($this->password == $password);
     }
 }
