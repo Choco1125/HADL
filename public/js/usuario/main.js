@@ -24,7 +24,8 @@ function toggleButton(id) {
 
     let estado = boton.dataset.estado;
     tr.removeChild(boton);
-    if(estado == 'inactivo'){
+		console.log(estado);
+    if(estado == 'inactivo' || estado == 'solicitando'){
         tr.appendChild(botonDesctivar(id));
     }else{
         tr.appendChild(botonActivar(id));

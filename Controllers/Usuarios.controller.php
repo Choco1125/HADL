@@ -118,7 +118,18 @@ class Usuarios extends Controller
         $id = $this->set_value($_POST['id']);
         $estado = $this->set_value($_POST['estado']);
 
-        $estados = $estado == 'activo' ? 'inactivo' : 'activo';
+				switch ($estado){
+					case 'activo':
+						$estados = 'inactivo';
+						break;
+					case 'solicitando':
+					case 'inactivo':
+						$estados = 'activo';
+						break;
+					default:
+						$estados = 'inactivo';
+						break;
+				}
 
         $this->load_model('Usuario');
 

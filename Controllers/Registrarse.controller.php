@@ -74,7 +74,7 @@ class Registrarse extends Controller
       $usuario->set_nombres(ucfirst($nombre));
       $usuario->set_email($correo);
       $usuario->set_celular($celular);
-      $usuario->set_estado('Solicitando');
+      $usuario->set_estado('solicitando');
       $usuario->set_rol('user');
 			$usuario->set_password($celular);
 			$guardar = $usuario->crear();
