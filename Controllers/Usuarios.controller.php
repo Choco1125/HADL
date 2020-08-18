@@ -1,253 +1,329 @@
 <?php
+
+require 'libs/PHPMailer/src/PHPMailer.php';
+require 'libs/PHPMailer/src/SMTP.php';
+require 'libs/PHPMailer/src/Exception.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 class Usuarios extends Controller
 {
-    public function __construct()
-    {
-        parent::__construct();
-        if (!$this->is_login() || !$this->is_admin()) {
-            header('location: ' . URL);
-        }
-        $this->view->set_title_page('Usuario');
-        $this->view->active = 'usuario';
-    }
+	public function __construct()
+	{
+		parent::__construct();
+		if (!$this->is_login() || !$this->is_admin()) {
+			header('location: ' . URL);
+		}
+		$this->view->set_title_page('Usuario');
+		$this->view->active = 'usuario';
+	}
 
-    public function render()
-    {
-        $this->load_model('Usuario');
+	public function render()
+	{
+		$this->load_model('Usuario');
 
-        $usuarios = new Usuario();
-        $usuarios->set_id($_SESSION['id']);
-        $this->view->scripts = [
-            'libs/spinner.js',
-            'libs/alerta.js',
-            'libs/peticiones.js',
-            'usuario/main.js'
-        ];
-        $this->view->usuarios = $usuarios->traer_todos();
-        $this->view->render('admin/usuario/index');
-    }
+		$usuarios = new Usuario();
+		$usuarios->set_id($_SESSION['id']);
+		$this->view->scripts = [
+			'libs/spinner.js',
+			'libs/alerta.js',
+			'libs/peticiones.js',
+			'usuario/main.js'
+		];
+		$this->view->usuarios = $usuarios->traer_todos();
+		$this->view->render('admin/usuario/index');
+	}
 
-    public function crear()
-    {
-        $this->view->scripts = [
-            'libs/peticiones.js',
-            'libs/erro.js',
-            'libs/spinner.js',
-            'usuario/crear.js'
-        ];
-        $this->view->set_title_page('Crear Usuario');
-        $this->view->render('admin/usuario/crear');
-    }
+	public function crear()
+	{
+		$this->view->scripts = [
+			'libs/peticiones.js',
+			'libs/erro.js',
+			'libs/spinner.js',
+			'usuario/crear.js'
+		];
+		$this->view->set_title_page('Crear Usuario');
+		$this->view->render('admin/usuario/crear');
+	}
 
-    public function nuevo()
-    {
-        $nombres = $this->set_value($_POST['nombres']);
-        $email = $this->set_value($_POST['email']);
-        $rol = $this->set_value($_POST['rol']);
-        $estado = $this->set_value($_POST['estado']);
-        $nit = $this->set_value($_POST['nit']);
-        $celular = $this->set_value($_POST['celular']);
-        $direccion = $this->set_value($_POST['direccion']);
+	public function nuevo()
+	{
+		$nombres = $this->set_value($_POST['nombres']);
+		$email = $this->set_value($_POST['email']);
+		$rol = $this->set_value($_POST['rol']);
+		$estado = $this->set_value($_POST['estado']);
+		$nit = $this->set_value($_POST['nit']);
+		$celular = $this->set_value($_POST['celular']);
+		$direccion = $this->set_value($_POST['direccion']);
 
-        $celular = $this->formatear_numero($celular);
-        $errores = [];
+		$celular = $this->formatear_numero($celular);
+		$errores = [];
 
-        if (empty($nombres)) {
-            array_push($errores, [
-                'input' => 'nombre',
-                'mensaje' => 'Debes ingresar un nombre'
-            ]);
-        }
+		if (empty($nombres)) {
+			array_push($errores, [
+				'input' => 'nombre',
+				'mensaje' => 'Debes ingresar un nombre'
+			]);
+		}
 
-        if (empty($email)) {
-            array_push($errores, [
-                'input' => 'email',
-                'mensaje' => 'Debes ingresar un correo'
-            ]);
-        } else if (!$this->is_valid_email($email)) {
-            array_push($errores, [
-                'input' => 'email',
-                'mensaje' => 'Debes ingresar un correo válido'
-            ]);
-        }
+		if (empty($email)) {
+			array_push($errores, [
+				'input' => 'email',
+				'mensaje' => 'Debes ingresar un correo'
+			]);
+		} else if (!$this->is_valid_email($email)) {
+			array_push($errores, [
+				'input' => 'email',
+				'mensaje' => 'Debes ingresar un correo válido'
+			]);
+		}
 
-        if ($rol == 'user' && !empty($celular)) {
-            if (!$this->is_valid_number($celular)) {
-                array_push($errores, [
-                    'input' => 'celular',
-                    'mensaje' => 'Debes ingresar un número celular válido'
-                ]);
-            }
-        }
+		if ($rol == 'user' && !empty($celular)) {
+			if (!$this->is_valid_number($celular)) {
+				array_push($errores, [
+					'input' => 'celular',
+					'mensaje' => 'Debes ingresar un número celular válido'
+				]);
+			}
+		}
 
-        if (count($errores) == 0) {
-            $this->load_model('Usuario');
-            $usuario = new Usuario();
-            $usuario->set_nombres(ucwords($nombres));
-            $usuario->set_email($email);
-            $usuario->set_rol($rol);
-            $usuario->set_estado($estado);
-            $usuario->set_nit($nit);
-            $usuario->set_direccion($direccion);
-            $usuario->set_celular($celular);
-						$pass = uniqid();
-            $usuario->set_password(password_hash($pass,PASSWORD_DEFAULT));
+		if (count($errores) == 0) {
+			$this->load_model('Usuario');
+			$usuario = new Usuario();
+			$usuario->set_nombres(ucwords($nombres));
+			$usuario->set_email($email);
+			$usuario->set_rol($rol);
+			$usuario->set_estado($estado);
+			$usuario->set_nit($nit);
+			$usuario->set_direccion($direccion);
+			$usuario->set_celular($celular);
+			$pass = uniqid();
+			$usuario->set_password(password_hash($pass, PASSWORD_DEFAULT));
 
-            $guardar = $usuario->crear();
+			$guardar = $usuario->crear();
 
-            if ($guardar == ['ok']) {
-                echo json_encode([
-                    'status' => 201
-                ]);
-            } else {
-                echo json_encode([
-                    'status' => 500,
-                    'error' => $guardar
-                ]);
-            }
-        } else {
-            echo json_encode([
-                'status' => 400,
-                'errores' => $errores
-            ]);
-        }
-    }
+			if ($guardar == ['ok']) {
+				echo json_encode([
+					'status' => 201
+				]);
+				$this->sendMailCreate($email, $pass, ucwords($nombres));
+			} else {
+				echo json_encode([
+					'status' => 500,
+					'error' => $guardar
+				]);
+			}
+		} else {
+			echo json_encode([
+				'status' => 400,
+				'errores' => $errores
+			]);
+		}
+	}
 
-    public function cambiar_estado()
-    {
-        $id = $this->set_value($_POST['id']);
-        $estado = $this->set_value($_POST['estado']);
+	public function cambiar_estado()
+	{
+		$id = $this->set_value($_POST['id']);
+		$estado = $this->set_value($_POST['estado']);
 
-				switch ($estado){
-					case 'activo':
-						$estados = 'inactivo';
-						break;
-					case 'solicitando':
-					case 'inactivo':
-						$estados = 'activo';
-						break;
-					default:
-						$estados = 'inactivo';
-						break;
-				}
+		switch ($estado) {
+			case 'activo':
+				$estados = 'inactivo';
+				break;
+			case 'solicitando':
+			case 'inactivo':
+				$estados = 'activo';
+				break;
+			default:
+				$estados = 'inactivo';
+				break;
+		}
 
-        $this->load_model('Usuario');
+		$this->load_model('Usuario');
 
-        $usuario = new Usuario();
+		$usuario = new Usuario();
 
-        $usuario->set_id($id);
-        $usuario->set_estado($estados);
-        $actualizar = $usuario->actualizar_estado();
+		$usuario->set_id($id);
+		$usuario->set_estado($estados);
+		$actualizar = $usuario->actualizar_estado();
 
-        if ($actualizar == ['ok']) {
-            echo json_encode([
-                'status' => 200,
-                'datos' => [
-                    'id' => $usuario->get_id(),
-                    'estado' => $usuario->get_estado(),
-                    'estado_ingresado' => $estado
-                ]
-            ]);
-        } else {
-            echo json_encode([
-                'status' => 500,
-                'error' => $actualizar
-            ]);
-        }
-    }
+		if ($actualizar == ['ok']) {
+			echo json_encode([
+				'status' => 200,
+				'datos' => [
+					'id' => $usuario->get_id(),
+					'estado' => $usuario->get_estado(),
+					'estado_ingresado' => $estado
+				]
+			]);
+		} else {
+			echo json_encode([
+				'status' => 500,
+				'error' => $actualizar
+			]);
+		}
+	}
 
-    public function editar($parametros)
-    {
-        $id = $this->set_value($parametros[0]);
+	public function editar($parametros)
+	{
+		$id = $this->set_value($parametros[0]);
 
-        if (!empty($id)) {
-            $this->load_model('Usuario');
+		if (!empty($id)) {
+			$this->load_model('Usuario');
 
-            $usuario = new Usuario();
-            $usuario->set_id($id);
-            $mis_datos = $usuario->seleccionar_mis_datos();
+			$usuario = new Usuario();
+			$usuario->set_id($id);
+			$mis_datos = $usuario->seleccionar_mis_datos();
 
-            if ($mis_datos == ['ok'] && !is_null($usuario->get_email())) {
-                $this->view->scripts = [
-                    'libs/spinner.js',
-                    'libs/alerta.js',
-                    'libs/peticiones.js',
-                    'libs/erro.js',
-                    'usuario/editar.js'
-                ];
-                $this->view->usuario = $usuario;
-                $this->view->render('admin/usuario/editar');
-            } else {
-                header('location: ' . URL . '/usuarios');
-            }
-        } else {
-            header('location: ' . URL . '/usuarios');
-        }
-    }
+			if ($mis_datos == ['ok'] && !is_null($usuario->get_email())) {
+				$this->view->scripts = [
+					'libs/spinner.js',
+					'libs/alerta.js',
+					'libs/peticiones.js',
+					'libs/erro.js',
+					'usuario/editar.js'
+				];
+				$this->view->usuario = $usuario;
+				$this->view->render('admin/usuario/editar');
+			} else {
+				header('location: ' . URL . '/usuarios');
+			}
+		} else {
+			header('location: ' . URL . '/usuarios');
+		}
+	}
 
-    public function actualizar()
-    {
-        $id = $this->set_value($_POST['id']);
-        $nombres = $this->set_value($_POST['nombres']);
-        $email = $this->set_value($_POST['email']);
-        $rol = $this->set_value($_POST['rol']);
-        $estado = $this->set_value($_POST['estado']);
-        $nit = $this->set_value($_POST['nit']);
-        $celular = $this->set_value($_POST['celular']);
-        $direccion = $this->set_value($_POST['direccion']);
+	public function actualizar()
+	{
+		$id = $this->set_value($_POST['id']);
+		$nombres = $this->set_value($_POST['nombres']);
+		$email = $this->set_value($_POST['email']);
+		$rol = $this->set_value($_POST['rol']);
+		$estado = $this->set_value($_POST['estado']);
+		$nit = $this->set_value($_POST['nit']);
+		$celular = $this->set_value($_POST['celular']);
+		$direccion = $this->set_value($_POST['direccion']);
 
-        $celular = $this->formatear_numero($celular);
-        $errores = [];
+		$celular = $this->formatear_numero($celular);
+		$errores = [];
 
-        if (empty($nombres)) {
-            array_push($errores, [
-                'input' => 'nombre',
-                'mensaje' => 'Debes ingresar un nombre'
-            ]);
-        }
+		if (empty($nombres)) {
+			array_push($errores, [
+				'input' => 'nombre',
+				'mensaje' => 'Debes ingresar un nombre'
+			]);
+		}
 
-        if (empty($email)) {
-            array_push($errores, [
-                'input' => 'email',
-                'mensaje' => 'Debes ingresar un correo'
-            ]);
-        } else if (!$this->is_valid_email($email)) {
-            array_push($errores, [
-                'input' => 'email',
-                'mensaje' => 'Debes ingresar un correo válido'
-            ]);
-        }
+		if (empty($email)) {
+			array_push($errores, [
+				'input' => 'email',
+				'mensaje' => 'Debes ingresar un correo'
+			]);
+		} else if (!$this->is_valid_email($email)) {
+			array_push($errores, [
+				'input' => 'email',
+				'mensaje' => 'Debes ingresar un correo válido'
+			]);
+		}
 
-        if ($rol == 'user' && !empty($celular)) {
-            if (!$this->is_valid_number($celular)) {
-                array_push($errores, [
-                    'input' => 'celular',
-                    'mensaje' => 'Debes ingresar un número celular válido'
-                ]);
-            }
-        }
+		if ($rol == 'user' && !empty($celular)) {
+			if (!$this->is_valid_number($celular)) {
+				array_push($errores, [
+					'input' => 'celular',
+					'mensaje' => 'Debes ingresar un número celular válido'
+				]);
+			}
+		}
 
-        if (count($errores) == 0) {
-            $this->load_model('Usuario');
-            $usuario = new Usuario($id, $email, ucwords($nombres), null, $rol, $nit, $celular, $direccion, $estado);
+		if (count($errores) == 0) {
+			$this->load_model('Usuario');
+			$usuario = new Usuario($id, $email, ucwords($nombres), null, $rol, $nit, $celular, $direccion, $estado);
 
-            $guardar = $usuario->actualizar();
+			$guardar = $usuario->actualizar();
 
-            if ($guardar == ['ok']) {
-                echo json_encode([
-                    'status' => 200
-                ]);
-            } else {
-                echo json_encode([
-                    'status' => 500,
-                    'error' => $guardar
-                ]);
-            }
-        } else {
-            echo json_encode([
-                'status' => 400,
-                'errores' => $errores
-            ]);
-        }
-    }
+			if ($guardar == ['ok']) {
+				echo json_encode([
+					'status' => 200
+				]);
+			} else {
+				echo json_encode([
+					'status' => 500,
+					'error' => $guardar
+				]);
+			}
+		} else {
+			echo json_encode([
+				'status' => 400,
+				'errores' => $errores
+			]);
+		}
+	}
+
+	public function sendMailCreate($email, $password, $name)
+	{
+		try {
+			$mail =  new PHPMailer();
+			$mail->IsSMTP();
+			$mail->SMTPDebug = 0;
+			$mail->Host = 'smtp.gmail.com';
+			$mail->Port = 587;
+			$mail->SMTPSecure = 'tls';
+			$mail->SMTPAuth = true;
+			$mail->Username = constant('CORREO');
+			$mail->Password = constant('EMAIL_CONTRASENA');
+			$mail->SetFrom(constant('CORREO'), constant('APPNAME'));
+			$mail->addAddress($email, $name);
+			$mail->Subject = "{$name}, bienvenido a " . constant('APPNAME');
+			$mail->isHTML(true);
+			$cuerpo = '
+				<html>
+					<head>
+						<style>
+							body {
+								font-family: tahoma;
+								width: 50%;
+								margin: 0 auto;
+								background-color: rgb(245, 245, 245);
+							}
+							.head {
+								text-align: center;
+								font-size: 18px;
+							}
+							.body,
+							.foot {
+								background-color: #fff;
+								font-size: 16px;
+								padding: 5px;
+							}
+							.body div.cuenta-info label {
+								font-weight: bolder;
+							}
+						</style>
+					</head>
+					<body>
+						<div>
+							<div class="head">
+								<h1>Bienvenido ' . $name . '</h1>
+							</div>
+							<div class="body">
+								<p>Te damos la vienvenida a ' . constant('APPNAME') . '</p>
+								<div class="cuenta-info">
+									<label>Correo: </label>
+									<p>' . $email . '</p>
+									<label>Contraseña: </label>
+									<p>' . $password . '</p>
+								</div>
+							</div>
+						</div>
+					</body>
+				</html>
+			';
+			$mail->Body = $cuerpo;
+			$mail->send();
+		} catch (Exception $e) {
+			return false;
+		}
+	}
 }

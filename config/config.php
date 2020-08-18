@@ -11,3 +11,7 @@ define('DB_HOST', 'localhost');
 define('DB_NAME', 'HADL');
 define('DB_USER', 'root');
 define('DB_PASS', '');
+
+//Correos
+define('CORREO', 'jhondoe981125@gmail.com');
+define('EMAIL_CONTRASENA', 'ADSI1835271');

@@ -82,7 +82,8 @@ class Registrarse extends Controller
 			if($guardar == ['ok']){
 				echo json_encode([
 					'status' => 201
-				]);
+        ]);
+        
 			} else {
 				echo json_encode([
 					'status' => 500,
