@@ -127,12 +127,15 @@ class Usuarios extends Controller
 	{
 		$id = $this->set_value($_POST['id']);
 		$estado = $this->set_value($_POST['estado']);
-
+		$this->load_model('Usuario');
 		switch ($estado) {
 			case 'activo':
 				$estados = 'inactivo';
 				break;
 			case 'solicitando':
+				$estados = 'activo';
+				$this->sendMailAcepted($id);
+				break;
 			case 'inactivo':
 				$estados = 'activo';
 				break;
@@ -140,8 +143,6 @@ class Usuarios extends Controller
 				$estados = 'inactivo';
 				break;
 		}
-
-		$this->load_model('Usuario');
 
 		$usuario = new Usuario();
 
@@ -325,5 +326,76 @@ class Usuarios extends Controller
 		} catch (Exception $e) {
 			return false;
 		}
+	}
+
+	public function sendMailAcepted($user_id){
+		$usuario = new Usuario();
+		$usuario->set_id($user_id);
+		$usuario->seleccionar_mis_datos();
+		try{
+			$mail =  new PHPMailer();
+			$mail->IsSMTP();
+			$mail->SMTPDebug = 0;
+			$mail->Host = 'smtp.gmail.com';
+			$mail->Port = 587;
+			$mail->SMTPSecure = 'tls';
+			$mail->SMTPAuth = true;
+			$mail->Username = constant('CORREO');
+			$mail->Password = constant('EMAIL_CONTRASENA');
+			$mail->SetFrom(constant('CORREO'), constant('APPNAME'));
+			$mail->addAddress($usuario->get_email(), $usuario->get_nombres());
+			$mail->Subject = "{$usuario->get_nombres()}, bienvenido a " . constant('APPNAME');
+			$mail->isHTML(true);
+
+			$cuerpo = '
+				<html>
+					<head>
+						<style>
+							body {
+								font-family: tahoma;
+								width: 50%;
+								margin: 0 auto;
+								background-color: rgb(245, 245, 245);
+							}
+							.head {
+								text-align: center;
+								font-size: 18px;
+							}
+							.body,
+							.foot {
+								background-color: #fff;
+								font-size: 16px;
+								padding: 5px;
+							}
+							.body div.cuenta-info label {
+								font-weight: bolder;
+							}
+						</style>
+					</head>
+					<body>
+						<div>
+							<div class="head">
+								<h1>Bienvenido ' . $usuario->get_nombres() . '</h1>
+							</div>
+							<div class="body">
+								<p>Te damos la vienvenida a ' . constant('APPNAME') . '</p>
+								<div class="cuenta-info">
+									<label>Correo: </label>
+									<p>' . $usuario->get_email() . '</p>
+									<label>Contraseña: </label>
+									<p>' . $usuario->get_celular() . '</p>
+								</div>
+							</div>
+						</div>
+					</body>
+				</html>
+			';
+
+			$mail->Body = $cuerpo;
+			$mail->send();
+		
+		}catch (Exception $ex){
+			return false;
+		}	
 	}
 }

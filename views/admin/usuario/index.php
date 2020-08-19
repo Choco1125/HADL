@@ -26,8 +26,12 @@
                 if(isset($this->usuarios)){
                     foreach($this->usuarios as $usuario){
             ?>
-                <tr>
-                    <td><?php echo $usuario->email; ?></td>
+							<tr>
+										<td><?php
+												 if($usuario->estado == 'solicitando'){
+													 echo '<i class="fas fa-exclamation-triangle mr-1 text-warning"></i>';
+												 }
+												 echo $usuario->email; ?></td>
                     <td><?php echo $usuario->nombres; ?></td>
                     <td><?php echo $usuario->nit; ?></td>
                     <td>

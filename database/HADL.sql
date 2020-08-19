@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 13-08-2020 a las 18:45:38
+-- Tiempo de generación: 18-08-2020 a las 22:19:17
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.6
 
@@ -95,12 +95,12 @@ CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
   `email` varchar(255) COLLATE utf8_bin NOT NULL,
   `nombres` varchar(255) COLLATE utf8_bin NOT NULL,
-  `password` varchar(255) COLLATE utf8_bin NOT NULL,
+  `password` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
   `rol` varchar(10) COLLATE utf8_bin NOT NULL,
   `nit` varchar(100) COLLATE utf8_bin DEFAULT NULL,
   `celular` varchar(20) COLLATE utf8_bin DEFAULT NULL,
   `direccion` varchar(50) COLLATE utf8_bin DEFAULT NULL,
-  `estado` varchar(10) COLLATE utf8_bin NOT NULL DEFAULT 'activo'
+  `estado` varchar(20) COLLATE utf8_bin NOT NULL DEFAULT 'activo'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
@@ -108,8 +108,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `email`, `nombres`, `password`, `rol`, `nit`, `celular`, `direccion`, `estado`) VALUES
-(1, 'choco@mail.com', 'Choco', '123', 'admin', '', '', '', 'activo'),
-(2, 'kevinDanga@mail.com', 'Kevin Danga', '5f356d393fa94', 'user', '9009765-4', '3114567098', 'cll 48h 4f 32 Manizales', 'activo');
+(1, 'choco@mail.com', 'Choco', '$2y$10$TVdyIJZJ57ioA4W782KYoeOOigV2sIRqJL9HaptQbGyhWc9C3tQ56', 'admin', '', '', '', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -181,7 +180,7 @@ ALTER TABLE `solicitud`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
