@@ -328,11 +328,12 @@ class Usuarios extends Controller
 		}
 	}
 
-	public function sendMailAcepted($user_id){
+	public function sendMailAcepted($user_id)
+	{
 		$usuario = new Usuario();
 		$usuario->set_id($user_id);
 		$usuario->seleccionar_mis_datos();
-		try{
+		try {
 			$mail =  new PHPMailer();
 			$mail->IsSMTP();
 			$mail->SMTPDebug = 0;
@@ -393,9 +394,24 @@ class Usuarios extends Controller
 
 			$mail->Body = $cuerpo;
 			$mail->send();
-		
-		}catch (Exception $ex){
+		} catch (Exception $ex) {
 			return false;
-		}	
+		}
+	}
+
+	public function solicitudes()
+	{
+		$this->load_model('Usuario');
+
+		$usuarios = new Usuario();
+		$usuarios->set_id($_SESSION['id']);
+		$this->view->scripts = [
+			'libs/spinner.js',
+			'libs/alerta.js',
+			'libs/peticiones.js',
+			'usuario/main.js'
+		];
+		$this->view->usuarios = $usuarios->traer_todos_por_solicitud();
+		$this->view->render('admin/usuario/index');
 	}
 }
