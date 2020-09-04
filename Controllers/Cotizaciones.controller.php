@@ -42,7 +42,7 @@ class Cotizaciones extends Controller
         'libs/spinner.js',
         'cotizacion/crear.js'
       ];
-      $this->view->clientes = $usuarios->traer_todos();
+      $this->view->clientes = $usuarios->traer_todos_activos();
       $this->view->render('admin/cotizacion/crear');
     } else {
       $this->view->scripts = [
@@ -288,5 +288,20 @@ class Cotizaciones extends Controller
     $pdf->Cell(0, 7, $total, 1, 1, 'C');
 
     $pdf->Output();
+  }
+
+  public function pendientes()
+  {
+    $this->load_model('Cotizacion');
+    $cotizacion = new Cotizacion();
+    $this->view->scripts = [
+      'libs/peticiones.js',
+      'libs/erro.js',
+      'libs/alerta.js',
+      'libs/spinner.js',
+      'cotizacion/main.js'
+    ];
+    $this->view->cotizaciones = $cotizacion->seleccionar_todos_penidentes();
+    $this->view->render('admin/cotizacion/index');
   }
 }

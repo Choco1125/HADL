@@ -172,6 +172,26 @@ class Servicios extends Controller
     }
   }
 
+	public function pendientes(){
+		$this->load_model('Solicitud');
+		$solicitud = new Solicitud();
+		$this->view->scripts = [
+      'libs/peticiones.js',
+      'libs/erro.js',
+      'libs/alerta.js',
+      'libs/spinner.js',
+      'servicios/solicitud/main.js'
+    ];
+    $this->view->solicitudes = $solicitud->seleccionar_todos_pendientes();
+
+		/*	
+		echo '<pre>';
+		var_dump($this->view->solicitudes);
+		echo '<pre>';
+		 */	
+    $this->view->render('admin/servicios/solicitud');
+
+	}
   //----------------------------------------------------------
 
   //Servicios--------------------------------------------------

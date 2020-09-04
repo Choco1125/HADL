@@ -217,4 +217,34 @@ class Solicitud extends Model
       ];
     }
   }
+
+	public function get_cantidad_pendientes(){
+		try{
+			$consulta = "SELECT COUNT(id) AS cantidad FROM solicitud WHERE fecha_entrega IS NULL";
+			$sql = $this->db_connection->query($consulta);
+			$servicios = null;
+
+			while($row = $sql->fetch(PDO::FETCH_OBJ)){
+				$servicios[] = $row;
+			}
+
+			return $servicios[0];
+		} catch (PDOException $ex) {
+			return ['error' => $ex->errorInfo];
+		}
+	}
+
+	public function seleccionar_todos_pendientes(){
+    try {
+      $slq = $this->db_connection->query("SELECT solicitud.id AS solicitudId, solicitud.fecha_creacion, solicitud.fecha_entrega, solicitud.descripcion, usuario.nombres, usuario.nit FROM solicitud INNER JOIN usuario ON solicitud.usuario_id = usuario.id WHERE fecha_entrega IS NULL  ORDER BY solicitud.id DESC");
+	    $result_set = null;
+     	while($row  = $slq->fetch(PDO::FETCH_ASSOC)){
+        $result_set[] = $row;
+      }
+      return $result_set;
+    } catch (PDOException $ex) {
+    	echo $ex->getMessage();
+      die();
+    }
+ 	}
 }

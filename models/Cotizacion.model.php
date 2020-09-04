@@ -239,4 +239,38 @@ class Cotizacion extends Model
             return ['error' => $ex->errorInfo];
         }
     }
+
+    public function contar_pendientes()
+    {
+        try {
+            $consulta = "SELECT COUNT(id) AS cotizaciones_penidentes FROM cotizacion WHERE estado = 'En Solicitud' OR estado = 'En proceso'";
+            $sql = $this->db_connection->query($consulta);
+
+            $resulset = [];
+
+            while ($row = $sql->fetch(PDO::FETCH_OBJ)) {
+                $resulset = $row;
+            }
+            return $resulset;
+        } catch (PDOException $ex) {
+            return null;
+        }
+    }
+
+    public function seleccionar_todos_penidentes()
+    {
+        try {
+            $consulta = "SELECT cotizacion.id, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id WHERE cotizacion.estado = 'En Solicitud' OR cotizacion.estado = 'En proceso' ORDER BY cotizacion.id DESC";
+            $sql = $this->db_connection->query($consulta);
+
+            $resulset = [];
+
+            while ($row = $sql->fetch(PDO::FETCH_OBJ)) {
+                $resulset[] = $row;
+            }
+            return $resulset;
+        } catch (PDOException $ex) {
+            return null;
+        }
+    }
 }

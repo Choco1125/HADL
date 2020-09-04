@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 18-08-2020 a las 22:19:17
+-- Tiempo de generación: 04-09-2020 a las 20:10:23
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.6
 
@@ -108,7 +108,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `email`, `nombres`, `password`, `rol`, `nit`, `celular`, `direccion`, `estado`) VALUES
-(1, 'choco@mail.com', 'Choco', '$2y$10$TVdyIJZJ57ioA4W782KYoeOOigV2sIRqJL9HaptQbGyhWc9C3tQ56', 'admin', '', '', '', 'activo');
+(1, 'choco@mail.com', 'Choco', '$2y$10$DOFplIL9XlZV6ytclJTKFOAr9fpLHCJvStNZ/hJjYtrEzxAuU4NBO', 'admin', '', '', '', 'activo');
 
 --
 -- Índices para tablas volcadas

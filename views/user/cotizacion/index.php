@@ -14,7 +14,6 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">Usuario</th>
                     <th scope="col">Fecha realización</th>
                     <th scope="col">Fecha vencimineto</th>
                     <th scope="col-lg-5">Descripción</th>
@@ -28,10 +27,9 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
                     foreach ($this->cotizaciones as $cotizacion) {
                 ?>
                         <tr id="<? echo $cotizacion->id?>">
-                            <td><?php echo $cotizacion->nombres . " (" . $cotizacion->nit . ")"; ?></td>
                             <td><?php echo $cotizacion->fecha_realizacion; ?></td>
                             <td><?php echo $cotizacion->fecha_vencimiento; ?></td>
-                            <td><?php echo $cotizacion->descripcion; ?></td>
+                            <td><?php echo substr($cotizacion->descripcion,0,50); ?> <?php echo strlen($cotizacion->descripcion) >=50 ? "..." : '' ?></td>
                             <?php
                             $tipo = '';
                             switch ($cotizacion->estado) {
@@ -53,11 +51,11 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
                                 <?php echo $cotizacion->estado; ?>
                             </td>
                             <td id="botones-<?php echo $cotizacion->id ?>">
-                                <a class="btn btn-outline-success btn-sm col-12" href="<?php echo URL ?>/cotizaciones/ver/<?php echo $cotizacion->id ?>" target="_blank">
-                                    Ver
+                                <a class="btn btn-outline-success btn-sm mt-2" href="<?php echo URL ?>/cotizaciones/ver/<?php echo $cotizacion->id ?>" target="_blank">
+                                    <i class="fas fa-eye"></i>
                                 </a>
-                                <a class="btn btn-outline-primary btn-sm col-12 mt-2" href="<?php echo URL ?>/cotizaciones/editar/<?php echo $cotizacion->id ?>">
-                                    Editar
+                                <a class="btn btn-outline-primary btn-sm  mt-2" href="<?php echo URL ?>/cotizaciones/editar/<?php echo $cotizacion->id ?>">
+                                    <i class="fas fa-edit"></i>
                                 </a>
                             </td>
                         </tr>

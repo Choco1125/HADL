@@ -272,4 +272,26 @@ class Usuario extends Model
       ];
     }
   }
+
+  public function traer_todos_activos()
+  {
+    try {
+      $consulta = "SELECT * FROM usuario WHERE id != :id AND id != 1 AND estado = 'activo'";
+      $sql = $this->db_connection->prepare($consulta);
+      $sql->execute([
+        'id' => $this->id
+      ]);
+
+      $result_set = null;
+
+      while ($row  = $sql->fetch(PDO::FETCH_OBJ)) {
+        $result_set[] = $row;
+      }
+      return $result_set;
+    } catch (PDOException $ex) {
+      return [
+        'error' => $ex->errorInfo
+      ];
+    }
+  }
 }

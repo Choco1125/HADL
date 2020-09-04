@@ -16,8 +16,7 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
           <th>Fecha creación</th>
           <th>Fecha entrega</th>
           <th>Descripción</th>
-          <th class="col-lg-4">Cliente</th>
-          <th class="col-lg-1"></th>
+          <th></th>
         </tr>
       </thead>
       <tbody id="tbl">
@@ -28,14 +27,13 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
             <tr id="<?php echo $solicitud['solicitudId'] ?>">
               <td><?php echo $solicitud['fecha_creacion']; ?></td>
               <td><?php echo $solicitud['fecha_entrega']; ?></td>
-              <td><?php echo $solicitud['descripcion']; ?></td>
-              <td><?php echo $solicitud['nombres'] . "( " . $solicitud['nit'] . " )"; ?></td>
+							<td><?php echo substr($solicitud['descripcion'],0,70); ?><?php echo strlen($solicitud['descripcion']) >= 70 ? '...' : ''; ?></td>
               <td id="botones-<?php echo $solicitud['id'] ?>">
-                <a class="btn btn-outline-success btn-sm mt-2 col-12" href="<?php echo URL ?>/servicios/ver_servicios/<?php echo $solicitud['solicitudId'] ?>" target="_blank">
-                  Ver
+                <a class="btn btn-outline-success btn-sm mt-2" href="<?php echo URL ?>/servicios/ver_servicios/<?php echo $solicitud['solicitudId'] ?>" target="_blank">
+                  <i class="fas fa-eye"></i>
                 </a>
-                <a class="btn btn-outline-primary btn-sm mt-2 col-12" href="<?php echo URL ?>/servicios/editar_solicitud/<?php echo $solicitud['solicitudId'] ?>">
-                  Editar
+                <a class="btn btn-outline-primary btn-sm mt-2" href="<?php echo URL ?>/servicios/editar_solicitud/<?php echo $solicitud['solicitudId'] ?>">
+                  <i class="fas fa-edit"></i>
                 </a>
               </td>
             </tr>

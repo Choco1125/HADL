@@ -309,7 +309,7 @@ class Usuarios extends Controller
 								<h1>Bienvenido ' . $name . '</h1>
 							</div>
 							<div class="body">
-								<p>Te damos la vienvenida a ' . constant('APPNAME') . '</p>
+								<p>Te damos la bienvenida a ' . constant('APPNAME') . '</p>
 								<div class="cuenta-info">
 									<label>Correo: </label>
 									<p>' . $email . '</p>
@@ -379,7 +379,7 @@ class Usuarios extends Controller
 								<h1>Bienvenido ' . $usuario->get_nombres() . '</h1>
 							</div>
 							<div class="body">
-								<p>Te damos la vienvenida a ' . constant('APPNAME') . '</p>
+								<p>Te damos la bienvenida a ' . constant('APPNAME') . '</p>
 								<div class="cuenta-info">
 									<label>Correo: </label>
 									<p>' . $usuario->get_email() . '</p>

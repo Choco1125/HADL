@@ -31,7 +31,7 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
                             <td><?php echo $cotizacion->nombres . " (" . $cotizacion->nit . ")"; ?></td>
                             <td><?php echo $cotizacion->fecha_realizacion; ?></td>
                             <td><?php echo $cotizacion->fecha_vencimiento; ?></td>
-                            <td><?php echo $cotizacion->descripcion; ?></td>
+														<td><?php echo substr($cotizacion->descripcion,0,30); ?> <?php echo strlen($cotizacion->descripcion) >=30 ? "..." : '' ?></td>
                             <?php
                             $tipo = '';
                             switch ($cotizacion->estado) {
@@ -53,14 +53,15 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
                                 <?php echo $cotizacion->estado; ?>
                             </td>
                             <td id="botones-<?php echo $cotizacion->id ?>">
-                                <a class="btn btn-outline-success btn-sm col-12 mt-2" href="<?php echo URL ?>/cotizaciones/ver/<?php echo $cotizacion->id ?>" target="_blank">
-                                    Ver
+                                <a class="btn btn-outline-success btn-sm  mt-2" href="<?php echo URL ?>/cotizaciones/ver/<?php echo $cotizacion->id ?>" target="_blank">
+                                    <i class="fas fa-eye"></i>
                                 </a>
-                                <a class="btn btn-outline-primary btn-sm col-12 mt-2" href="<?php echo URL ?>/cotizaciones/editar/<?php echo $cotizacion->id ?>">
-                                    Editar
+                                <a class="btn btn-outline-primary btn-sm  mt-2" href="<?php echo URL ?>/cotizaciones/editar/<?php echo $cotizacion->id ?>">
+                                    <i class="fas fa-edit"></i>
                                 </a>
-                                <button class="btn btn-outline-danger btn-sm col-12 mt-2" data-toggle="modal" data-target="#eliminar" data-cotizacion="<?php echo $cotizacion->id ?>">
-                                    Eliminar
+                                <button class="btn btn-outline-danger btn-sm  mt-2" data-toggle="modal" data-target="#eliminar" data-cotizacion="<?php echo $cotizacion->id ?>">
+                                    <i class="fa fa-trash"></i>
+
                                 </button>
                             </td>
                         </tr>
