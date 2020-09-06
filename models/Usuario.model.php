@@ -294,4 +294,26 @@ class Usuario extends Model
       ];
     }
   }
+
+	public function actualizar_cuenta()
+  {
+    try {
+      $consulta = "UPDATE usuario SET email =:email, nombres = :nombres, nit = :nit,celular = :celular,direccion = :direccion WHERE id = :id";
+      $sql = $this->db_connection->prepare($consulta);
+      $sql->execute([
+        'id' => $this->id,
+        'email' => $this->email,
+        'nombres' => $this->nombres,
+        'nit' => $this->nit,
+        'celular' => $this->celular,
+				'direccion' => $this->direccion
+      ]);
+
+      return ['ok'];
+    } catch (PDOException $ex) {
+      return [
+        'error' => $ex->errorInfo
+      ];
+    }
+  }
 }

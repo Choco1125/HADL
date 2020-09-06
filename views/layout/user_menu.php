@@ -17,15 +17,6 @@
           <a class="dropdown-item" href="<?php echo URL?>/cotizaciones">Listar</a>
         </div>
       </li>
-      <!-- <li class="nav-item dropdown <?php echo ($this->active == 'usuario')?'active':'' ?>">
-        <a class="nav-link dropdown-toggle" href="<?php echo URL?>/" id="dropdownSolicitudes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Usuarios
-        </a>
-        <div class="dropdown-menu" aria-labelledby="dropdownSolicitudes">
-          <a class="dropdown-item" href="<?php echo URL?>/usuarios/crear">Crear</a>
-          <a class="dropdown-item" href="<?php echo URL?>/usuarios">Listar</a>
-        </div>
-      </li> -->
       <li class="nav-item dropdown <?php echo ($this->active == 'servicios')?'active':'' ?>">
         <a class="nav-link dropdown-toggle" href="<?php echo URL?>/" id="dropdownSolicitudes" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Solicitud de servicios
@@ -33,6 +24,15 @@
         <div class="dropdown-menu" aria-labelledby="dropdownSolicitudes">
           <a class="dropdown-item" href="<?php echo URL?>/servicios/nueva_solicitud">Crear</a>
           <a class="dropdown-item" href="<?php echo URL?>/servicios/solicitud">Listar</a>
+        </div>
+      </li>
+			<li class="nav-item dropdown <?php echo ($this->active == 'cuenta')?'active':'' ?>">
+        <a class="nav-link dropdown-toggle" href="<?php echo URL?>/" id="dropdownCuenta" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         	Cuenta 
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownCuenta">
+          <a class="dropdown-item" href="<?php echo URL?>/cuenta">Configuraciones</a>
+          <a class="dropdown-item" href="<?php echo URL?>/cuenta/contrasena">Cambiar contraseña</a>
         </div>
       </li>
       <li class="nav-item">
