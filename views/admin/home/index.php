@@ -4,6 +4,11 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
 ?>
 
 <div class="container">
+		<div class="row-justify-content-center">
+        <div class="jumbotron mt-5">
+            <h1 class="display-4">¡Bienvenido administrador!</h1>
+        </div>
+    </div>
     <div class="row justify-content-around mt-5">
         <div class="card card-body col-md-3 mt-3">
             <h5 class="card-title">

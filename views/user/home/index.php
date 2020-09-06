@@ -7,7 +7,6 @@
     <div class="row-justify-content-center">
         <div class="jumbotron mt-5">
             <h1 class="display-4">¡Bienvenido Usuario!</h1>
-            <p class="lead">Estamos en construcción. :)</p>
         </div>
     </div>
 </div>
