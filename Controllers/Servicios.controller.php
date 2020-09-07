@@ -6,6 +6,9 @@ class Servicios extends Controller
     parent::__construct();
     $this->view->active = 'servicios';
     $this->view->set_title_page('Servicios');
+    if (!$this->is_login()) {
+      header('location: ' . URL);
+    }
   }
 
   public function render()
@@ -172,10 +175,11 @@ class Servicios extends Controller
     }
   }
 
-	public function pendientes(){
-		$this->load_model('Solicitud');
-		$solicitud = new Solicitud();
-		$this->view->scripts = [
+  public function pendientes()
+  {
+    $this->load_model('Solicitud');
+    $solicitud = new Solicitud();
+    $this->view->scripts = [
       'libs/peticiones.js',
       'libs/erro.js',
       'libs/alerta.js',
@@ -184,14 +188,13 @@ class Servicios extends Controller
     ];
     $this->view->solicitudes = $solicitud->seleccionar_todos_pendientes();
 
-		/*	
+    /*	
 		echo '<pre>';
 		var_dump($this->view->solicitudes);
 		echo '<pre>';
-		 */	
+		 */
     $this->view->render('admin/servicios/solicitud');
-
-	}
+  }
   //----------------------------------------------------------
 
   //Servicios--------------------------------------------------

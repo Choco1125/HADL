@@ -6,6 +6,9 @@ class Cotizaciones extends Controller
     parent::__construct();
     $this->view->set_title_page('Cotizaciones');
     $this->view->active = 'cotizacion';
+    if (!$this->is_login()) {
+      header('location: ' . URL);
+    }
   }
 
   public function render()
