@@ -11,6 +11,11 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
     <div class="card col-md-7">
       <div class="card-body">
         <div class="form-row">
+          <div class="form-group col-lg-12" id="old_password_group">
+            <label for="old_password">Contraseña</label>
+            <input type="password" class="form-control" id="old_password" placeholder="Contraseña">
+            <span class="text-danger"></span>
+          </div>
           <div class="form-group col-lg-12" id="new_password_group">
             <label for="new_password">Contraseña nueva</label>
             <input type="password" class="form-control" id="new_password" placeholder="Contraseña nueva">
@@ -18,7 +23,7 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
           </div>
           <div class="form-group col-lg-12" id="new_password_repeat_group">
             <label for="new_password_repeat">Confirmar contraseña nueva</label>
-            <input type="password" class="form-control" id="new_password_repeat" placeholder="Confirmar la constraseña nueva">
+            <input type="text" class="form-control" id="new_password_repeat" placeholder="Confirmar la constraseña nueva">
             <span class="text-danger"></span>
           </div>
           <button class="btn btn-primary btn-block" id="btn-crear">Guardar</button>

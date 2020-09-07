@@ -295,7 +295,7 @@ class Usuario extends Model
     }
   }
 
-	public function actualizar_cuenta()
+  public function actualizar_cuenta()
   {
     try {
       $consulta = "UPDATE usuario SET email =:email, nombres = :nombres, nit = :nit,celular = :celular,direccion = :direccion WHERE id = :id";
@@ -306,9 +306,47 @@ class Usuario extends Model
         'nombres' => $this->nombres,
         'nit' => $this->nit,
         'celular' => $this->celular,
-				'direccion' => $this->direccion
+        'direccion' => $this->direccion
       ]);
 
+      return ['ok'];
+    } catch (PDOException $ex) {
+      return [
+        'error' => $ex->errorInfo
+      ];
+    }
+  }
+
+  public function actualizar_contreasena()
+  {
+    try {
+      $consulta = "UPDATE usuario SET password = :password WHERE id = :id";
+      $sql = $this->db_connection->prepare($consulta);
+      $sql->execute([
+        'id' => $this->id,
+        'password' => $this->password
+      ]);
+
+      return ['ok'];
+    } catch (PDOException $ex) {
+      return [
+        'error' => $ex->errorInfo
+      ];
+    }
+  }
+
+  public function get_password_encrypted()
+  {
+    try {
+      $consulta = "SELECT password FROM usuario WHERE id != :id";
+      $sql = $this->db_connection->prepare($consulta);
+      $sql->execute([
+        'id' => $this->id
+      ]);
+
+      while ($row  = $sql->fetch(PDO::FETCH_OBJ)) {
+        $this->password = $row->password;
+      }
       return ['ok'];
     } catch (PDOException $ex) {
       return [
