@@ -26,6 +26,8 @@ require 'views/layout/head.php';
 
 
                 <a href="<?php echo URL ?>/registrarse" class="text-center d-block col-12 mt-2">Solicitar mi cuenta</a>
+								<a href="<?php echo URL ?>/recuperar" class="text-center d-block col-12 mt-2">He olvidado mi contraseña</a>
+
             </div>
         </div>
     </div>
