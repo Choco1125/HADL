@@ -1,1 +1,1 @@
-const appLinkDomain = 'http://localhost/HADL';
+const appLinkDomain = 'https://hall-app.herokuapp.com';
