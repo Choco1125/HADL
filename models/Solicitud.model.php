@@ -9,7 +9,7 @@ class Solicitud extends Model
   private $descripcion;
   private $listo;
 
-  public function __construct($id = null, $usuario_id = null, $fecha_creacion = null, $fecha_entrega = null, $descripcion = null, $listo = false)
+  public function __construct($id = null, $usuario_id = null, $fecha_creacion = null, $fecha_entrega = null, $descripcion = null, $listo = 0)
   {
     $this->id =  $id;
     $this->usuario_id =  $usuario_id;
@@ -71,12 +71,12 @@ class Solicitud extends Model
     return $this->descripcion;
   }
 
-  public function set_listo(bool $listo)
+  public function set_listo($listo)
   {
     $this->listo = $listo;
   }
 
-  public function get_listo(): bool
+  public function get_listo()
   {
     return $this->listo;
   }
@@ -181,12 +181,13 @@ class Solicitud extends Model
   public function actualizar()
   {
     try {
-      $consulta = "UPDATE solicitud SET usuario_id = :usuario_id, fecha_entrega = :fecha_entrega, descripcion = :descripcion WHERE id = :id";
+      $consulta = "UPDATE solicitud SET usuario_id = :usuario_id, fecha_entrega = :fecha_entrega, descripcion = :descripcion, listo = :listo WHERE id = :id";
       $sql = $this->db_connection->prepare($consulta);
       $sql->execute([
         'usuario_id' => $this->usuario_id,
         'fecha_entrega' => $this->fecha_entrega,
         'descripcion' => $this->descripcion,
+        'listo' => $this->listo,
         'id' => $this->id
       ]);
 

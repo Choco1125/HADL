@@ -32,7 +32,7 @@ function nuevoSelect() {
 
     let select = document.createElement('select');
     select.classList.add('custom-select', 'col-11');
-    select.setAttribute('name','servicios')
+    select.setAttribute('name', 'servicios')
 
     let boton = document.createElement('button');
     boton.classList.add('btn', 'btn-link', 'btn-sm', 'text-center', 'col-1');
@@ -42,7 +42,7 @@ function nuevoSelect() {
         if (document.getElementsByClassName('custom-select').length > 1) {
             cardBody.removeChild(formGroup);
         } else {
-            Alerta.show('danger','La solicitud debe incluir mínimo un servicio.');
+            Alerta.show('danger', 'La solicitud debe incluir mínimo un servicio.');
         }
     });
 
@@ -56,12 +56,12 @@ function nuevoSelect() {
 function addEventeButtons() {
     let botonesEliminar = document.getElementsByClassName('btn-link');
     for (let i = 0; i < botonesEliminar.length; i++) {
-        botonesEliminar.item(i).addEventListener('click',()=>{    
-            
+        botonesEliminar.item(i).addEventListener('click', () => {
+
             if (document.getElementsByClassName('custom-select').length > 2) {
                 cardBody.removeChild(botonesEliminar.item(i).parentElement);
             } else {
-                Alerta.show('danger','La solicitud debe incluir mínimo un servicio.');
+                Alerta.show('danger', 'La solicitud debe incluir mínimo un servicio.');
             }
 
             addEventeButtons();
@@ -69,57 +69,59 @@ function addEventeButtons() {
     }
 }
 
-crear.addEventListener('click', () =>nuevoSelect());
+crear.addEventListener('click', () => nuevoSelect());
 
-guardar.addEventListener('click', async ()=>{
+guardar.addEventListener('click', async () => {
     let selects = document.getElementsByName('servicios');
     let usuario = document.getElementById('usuario');
 
     let datos = [];
 
     for (let i = 0; i < selects.length; i++) {
-        if(selects.item(i).value !='null'){
-            datos.push(selects.item(i).value);        
+        if (selects.item(i).value != 'null') {
+            datos.push(selects.item(i).value);
         }
     }
 
-    if(usuario.value == ''){
+    if (usuario.value == '') {
         datos = [];
-        Erro.set('usuario_group','Debes seleccionar un cliente');
+        Erro.set('usuario_group', 'Debes seleccionar un cliente');
     }
 
-    if(datos.length > 0){
+    if (datos.length > 0) {
         let descripcion = document.getElementById('descripcion');
         let fechaEntrega = document.getElementById('fecha_entrega');
-        let solicitudId =  guardar.dataset.solicitud;
+        let solicitudId = guardar.dataset.solicitud;
+        let listo = document.getElementById('listo');
         let formData = new FormData();
 
-        formData.append('solicitudId',solicitudId);
-        formData.append('descripcion',descripcion.value);
-        formData.append('servicios',datos);
-        formData.append('cliente',usuario.value);
-        formData.append('fechaEntrega',fechaEntrega.value);
+        formData.append('solicitudId', solicitudId);
+        formData.append('descripcion', descripcion.value);
+        formData.append('servicios', datos);
+        formData.append('cliente', usuario.value);
+        formData.append('fechaEntrega', fechaEntrega.value);
+        formData.append('listo', listo.checked ? 1 : 0);
 
         Spinner.start('btn-guardar');
-        
-        let res = await consumidor.post('servicios','actualizar_solicitud',formData);
+
+        let res = await consumidor.post('servicios', 'actualizar_solicitud', formData);
         Spinner.end('btn-guardar');
-        
+
         switch (res.status) {
             case 200:
-                location.href = `${appLinkDomain}/servicios/solicitud`; 
+                location.href = `${appLinkDomain}/servicios/solicitud`;
                 break;
             case 400:
                 let errores = res.error;
-                errores.forEach(({input,mensaje})=>Erro.set(`${input}_group`,mensaje));
+                errores.forEach(({ input, mensaje }) => Erro.set(`${input}_group`, mensaje));
                 break;
-        
+
             default:
                 console.log(res);
                 break;
         }
-    }else{
-        Alerta.show('warning','No hay servicios para guardar.');
+    } else {
+        Alerta.show('warning', 'No hay servicios para guardar.');
     }
 });
 

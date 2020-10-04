@@ -132,11 +132,12 @@ class Servicios extends Controller
     $descripcion = $this->set_value($_POST['descripcion']);
     $fecha_entrega = $this->set_value($_POST['fechaEntrega']);
     $servicos = $this->set_value($_POST['servicios']);
+    $listo = $this->set_value($_POST['listo']);
 
     $servicios = explode(',', $servicos);
 
     $this->load_model('Solicitud');
-    $solicitud = new Solicitud($solicitud_id, $cliente, null, $fecha_entrega, ucfirst($descripcion));
+    $solicitud = new Solicitud($solicitud_id, $cliente, null, $fecha_entrega, ucfirst($descripcion), intval($listo));
     $actualizar = $solicitud->actualizar();
 
     if ($actualizar == ['ok']) {
