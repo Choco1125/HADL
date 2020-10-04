@@ -63,11 +63,12 @@ class Servicios extends Controller
     $descripcion = $this->set_value($_POST['descripcion']);
     $fecha_entrega =  $_SESSION['rol'] == 'user' ? null : $this->set_value($_POST['fechaEntrega']);
     $servicos = $this->set_value($_POST['servicios']);
+    $listo = $this->set_value($_POST['listo']);
+
 
     $servicios = explode(',', $servicos);
-
     $this->load_model('Solicitud');
-    $solicitud = new Solicitud(null, $cliente, date('Y-m-d'), $fecha_entrega, ucfirst($descripcion));
+    $solicitud = new Solicitud(null, $cliente, date('Y-m-d'), $fecha_entrega, ucfirst($descripcion), $listo);
     $guardar = $solicitud->crear();
 
     if ($guardar == ['ok']) {
