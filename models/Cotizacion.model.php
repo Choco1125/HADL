@@ -8,8 +8,9 @@ class Cotizacion extends Model
     private $fecha_vencimiento;
     private $descripcion;
     private $estado;
+    private $listo;
 
-    public function __construct($id = null, $usuario = null, $fecha_realizacion = null, $fecha_vencimiento = null, $descripcion = null, $estado = null)
+    public function __construct($id = null, $usuario = null, $fecha_realizacion = null, $fecha_vencimiento = null, $descripcion = null, $estado = null, $listo = 0)
     {
         parent::__construct();
         $this->table = 'cotizacion';
@@ -18,6 +19,7 @@ class Cotizacion extends Model
         $this->fecha_realizacion = $fecha_realizacion;
         $this->fecha_vencimiento = $fecha_vencimiento;
         $this->descripcion = $descripcion;
+        $this->listo = $listo;
         $this->estado = $estado;
     }
 
@@ -81,6 +83,16 @@ class Cotizacion extends Model
         return $this->estado;
     }
 
+    public function set_listo($listo)
+    {
+        $this->listo = $listo;
+    }
+
+    public function get_listo()
+    {
+        return $this->listo;
+    }
+
     public function seleccionar_todos()
     {
         try {
@@ -109,14 +121,15 @@ class Cotizacion extends Model
     public function crear()
     {
         try {
-            $consulta = "INSERT INTO cotizacion (usuario_id, fecha_realizacion, fecha_vencimiento,descripcion,estado) VALUES (:usuario_id,:fecha_realizacion,:fecha_vencimiento,:descripcion,:estado)";
+            $consulta = "INSERT INTO cotizacion (usuario_id, fecha_realizacion, fecha_vencimiento,descripcion,estado, listo) VALUES (:usuario_id,:fecha_realizacion,:fecha_vencimiento,:descripcion,:estado, :listo)";
             $sql = $this->db_connection->prepare($consulta);
             $sql->execute([
                 ':usuario_id' => $this->usuario,
                 ':fecha_realizacion' => $this->fecha_realizacion,
                 ':fecha_vencimiento' => $this->fecha_vencimiento,
                 ':descripcion' => $this->descripcion,
-                ':estado' => $this->estado
+                ':estado' => $this->estado,
+                'listo' => $this->listo
             ]);
 
             $this->id = $this->db_connection->lastInsertId();
