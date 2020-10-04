@@ -27,11 +27,13 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
             <tr id="<?php echo $solicitud['solicitudId'] ?>">
               <td><?php echo $solicitud['fecha_creacion']; ?></td>
               <td><?php echo $solicitud['fecha_entrega']; ?></td>
-							<td><?php echo substr($solicitud['descripcion'],0,70); ?><?php echo strlen($solicitud['descripcion']) >= 70 ? '...' : ''; ?></td>
+              <td><?php echo substr($solicitud['descripcion'], 0, 70); ?><?php echo strlen($solicitud['descripcion']) >= 70 ? '...' : ''; ?></td>
               <td id="botones-<?php echo $solicitud['id'] ?>">
-                <a class="btn btn-outline-success btn-sm mt-2" href="<?php echo URL ?>/servicios/ver_servicios/<?php echo $solicitud['solicitudId'] ?>" target="_blank">
-                  <i class="fas fa-eye"></i>
-                </a>
+                <?php if ($solicitud['listo'] == 1) { ?>
+                  <a class="btn btn-outline-success btn-sm mt-2" href="<?php echo URL ?>/servicios/ver_servicios/<?php echo $solicitud['solicitudId'] ?>" target="_blank">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                <?php } ?>
                 <a class="btn btn-outline-primary btn-sm mt-2" href="<?php echo URL ?>/servicios/editar_solicitud/<?php echo $solicitud['solicitudId'] ?>">
                   <i class="fas fa-edit"></i>
                 </a>

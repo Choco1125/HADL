@@ -63,7 +63,7 @@ class Servicios extends Controller
     $descripcion = $this->set_value($_POST['descripcion']);
     $fecha_entrega =  $_SESSION['rol'] == 'user' ? null : $this->set_value($_POST['fechaEntrega']);
     $servicos = $this->set_value($_POST['servicios']);
-    $listo = $this->set_value($_POST['listo']);
+    $listo = $this->set_value($_POST['listo'] ?? 0);
 
 
     $servicios = explode(',', $servicos);
