@@ -76,7 +76,7 @@ class Registrarse extends Controller
       $usuario->set_celular($celular);
       $usuario->set_estado('solicitando');
       $usuario->set_rol('user');
-			$usuario->set_password($celular);
+			$usuario->set_password(password_hash($celular,PASSWORD_DEFAULT));
 			$guardar = $usuario->crear();
 
 			if($guardar == ['ok']){
