@@ -11,4 +11,5 @@ require 'core/app.php';
 
 require 'libs/fpdf/fpdf.php';
 
+
 $app = new App();
