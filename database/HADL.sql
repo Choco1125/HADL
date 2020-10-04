@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-09-2020 a las 20:10:23
+-- Tiempo de generación: 04-10-2020 a las 22:39:00
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.6
 
@@ -44,7 +44,8 @@ CREATE TABLE `cotizacion` (
 
 CREATE TABLE `cotizacion_serivicio` (
   `cotizacion_id` int(11) DEFAULT NULL,
-  `servicio_id` int(11) DEFAULT NULL
+  `servicio_id` int(11) DEFAULT NULL,
+  `precio` int(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -71,7 +72,8 @@ CREATE TABLE `solicitud` (
   `usuario_id` int(11) DEFAULT NULL,
   `fecha_creacion` varchar(15) COLLATE utf8_bin NOT NULL,
   `fecha_entrega` varchar(15) COLLATE utf8_bin DEFAULT NULL,
-  `descripcion` text COLLATE utf8_bin DEFAULT NULL
+  `descripcion` text COLLATE utf8_bin DEFAULT NULL,
+  `listo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -82,7 +84,8 @@ CREATE TABLE `solicitud` (
 
 CREATE TABLE `solicitud_servico` (
   `servicio_id` int(11) DEFAULT NULL,
-  `solicitud_id` int(11) DEFAULT NULL
+  `solicitud_id` int(11) DEFAULT NULL,
+  `precio` int(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
