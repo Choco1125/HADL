@@ -100,7 +100,7 @@ class Cotizacion extends Model
                 $consulta = "SELECT cotizacion.id, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id ORDER BY cotizacion.id DESC";
                 $sql = $this->db_connection->query($consulta);
             } else {
-                $consulta = "SELECT cotizacion.id, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id WHERE cotizacion.usuario_id = :usuario ORDER BY cotizacion.id DESC";
+                $consulta = "SELECT cotizacion.id, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado,cotizacion.listo, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id WHERE cotizacion.usuario_id = :usuario ORDER BY cotizacion.id DESC";
                 $sql = $this->db_connection->prepare($consulta);
                 $sql->execute([
                     'usuario' => $this->get_usuario()
@@ -180,7 +180,7 @@ class Cotizacion extends Model
             if ($_SESSION['rol'] == 'user') {
                 $consulta = "UPDATE cotizacion SET descripcion = :descripcion WHERE id = :id";
             } else {
-                $consulta = "UPDATE cotizacion SET usuario_id = :usuario_id,fecha_vencimiento = :fecha_vencimiento,descripcion = :descripcion,estado = :estado WHERE id = :id";
+                $consulta = "UPDATE cotizacion SET usuario_id = :usuario_id,fecha_vencimiento = :fecha_vencimiento,descripcion = :descripcion,estado = :estado, listo = :listo WHERE id = :id";
             }
             $sql = $this->db_connection->prepare($consulta);
 
@@ -195,6 +195,7 @@ class Cotizacion extends Model
                     'fecha_vencimiento' => $this->get_fecha_vencimiento(),
                     'descripcion' => $this->get_descripcion(),
                     'estado' => $this->get_estado(),
+										'listo' => $this->get_listo(),
                     'id' => $this->get_id()
                 ]);
             }
@@ -208,7 +209,7 @@ class Cotizacion extends Model
     public function mis_datos()
     {
         try {
-            $consulta = "SELECT cotizacion.id AS cotizaciondId, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.id AS usuarioId, usuario.nombres, usuario.nit FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id WHERE cotizacion.id = :cotizacion_id ";
+            $consulta = "SELECT cotizacion.id AS cotizaciondId, cotizacion.fecha_realizacion, cotizacion.fecha_vencimiento, cotizacion.descripcion, cotizacion.estado, usuario.id AS usuarioId, usuario.nombres, usuario.nit, cotizacion.listo FROM cotizacion INNER JOIN usuario ON cotizacion.usuario_id = usuario.id WHERE cotizacion.id = :cotizacion_id ";
             $sql = $this->db_connection->prepare($consulta);
             $sql->execute([
                 ':cotizacion_id' => $this->id

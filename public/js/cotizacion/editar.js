@@ -90,6 +90,7 @@ guardar.addEventListener('click', async ()=>{
         let descripcion = document.getElementById('descripcion');
         let estado = document.getElementById('estado');
         let cotizacionId =  guardar.dataset.cotizacion;
+				let listo = document.getElementById('listo');
 
         let formData = new FormData();
 
@@ -99,6 +100,8 @@ guardar.addEventListener('click', async ()=>{
         formData.append('estado',estado.value);
         formData.append('fecha_vencimiento',fecha_vencimiento.value);
         formData.append('servicios',datos);
+				formData.append('listo', listo.checked ? 1 : 0);
+
 
         Spinner.start('btn-guardar');
         let res = await consumidor.post('cotizaciones','update',formData);

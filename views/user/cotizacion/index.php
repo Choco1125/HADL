@@ -1,6 +1,7 @@
 <?php
 require 'views/layout/head.php';
 require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
+var_dump($this->cotizaciones);
 ?>
 
 <div class="container">
@@ -51,9 +52,11 @@ require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
                                 <?php echo $cotizacion->estado; ?>
                             </td>
                             <td id="botones-<?php echo $cotizacion->id ?>">
+																<?php if($cotizacion->listo == 1) { ?>
                                 <a class="btn btn-outline-success btn-sm mt-2" href="<?php echo URL ?>/cotizaciones/ver/<?php echo $cotizacion->id ?>" target="_blank">
                                     <i class="fas fa-eye"></i>
                                 </a>
+																<?php } ?>
                                 <a class="btn btn-outline-primary btn-sm  mt-2" href="<?php echo URL ?>/cotizaciones/editar/<?php echo $cotizacion->id ?>">
                                     <i class="fas fa-edit"></i>
                                 </a>

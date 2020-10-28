@@ -163,10 +163,11 @@ class Cotizaciones extends Controller
     $estado = isset($_POST['estado']) ? $this->set_value($_POST['estado']) : '';
     $servicos = $this->set_value($_POST['servicios']);
     $fecha_vencimiento = isset($_POST['fecha_vencimiento']) ? $this->set_value($_POST['fecha_vencimiento']) : '';
+		$listo = $this->set_value($_POST['listo']);
 
     $servicios = explode(',', $servicos);
     $this->load_model('Cotizacion');
-    $cotizacion = new Cotizacion($id, $cliente, null, $fecha_vencimiento, $descripcion, $estado);
+    $cotizacion = new Cotizacion($id, $cliente, null, $fecha_vencimiento, $descripcion, $estado, intval($listo));
     $guardar = $cotizacion->actualizar();
 
     if ($guardar == ['ok']) {
