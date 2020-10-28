@@ -1,7 +1,6 @@
 <?php
 require 'views/layout/head.php';
 require 'views/layout/' . $_SESSION['rol'] . '_menu.php';
-var_dump($this->cotizaciones);
 ?>
 
 <div class="container">
