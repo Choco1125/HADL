@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-10-2020 a las 22:39:00
+-- Tiempo de generación: 28-10-2020 a las 22:07:16
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.6
 
@@ -33,7 +33,8 @@ CREATE TABLE `cotizacion` (
   `fecha_realizacion` varchar(15) NOT NULL,
   `fecha_vencimiento` varchar(15) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
-  `estado` varchar(50) NOT NULL
+  `estado` varchar(50) NOT NULL,
+  `listo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
