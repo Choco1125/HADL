@@ -28,11 +28,17 @@ function agregarASelect(select) {
 function nuevoSelect() {
 
   let formGroup = document.createElement('div');
-  formGroup.classList.add('form-group');
+  formGroup.classList.add('form-group','product-list');
 
   let select = document.createElement('select');
-  select.classList.add('custom-select', 'col-11');
-  select.setAttribute('name', 'servicios')
+  select.classList.add('custom-select', 'col-7');
+  select.setAttribute('name', 'servicios');
+
+	const input = document.createElement('input');
+	input.classList.add('form-control', 'col-3','ml-1','d-inline');
+	input.setAttribute('type', 'text');
+	input.setAttribute('placeholder', 'Ingresa el precio');
+	input.setAttribute('name', 'precio');
 
   let boton = document.createElement('button');
   boton.classList.add('btn', 'btn-link', 'btn-sm', 'text-center', 'col-1');
@@ -47,32 +53,62 @@ function nuevoSelect() {
   });
 
   formGroup.appendChild(select);
+	formGroup.appendChild(input);
   formGroup.appendChild(boton);
   cardBody.appendChild(formGroup);
 
   agregarASelect(select);
 }
 
+function setErrosToSelect()
+
+function validarServicesList(servicesList){
+	for(let i = 0; i < servicesList.length; i++){
+		if(servicesList[i].serviceId === "null"){
+			
+		}
+	}
+}
+
 crear.addEventListener('click', () => nuevoSelect());
 
 guardar.addEventListener('click', async () => {
+	/*/Entra en modo mantenimiento
   let selects = document.getElementsByName('servicios');
   let usuario = document.getElementById('usuario');
   let listo = document.getElementById('listo');
-  console.log(listo.checked);
+	*/
+
   let datos = [];
 
+	/*
   for (let i = 0; i < selects.length; i++) {
     if (selects.item(i).value != 'null') {
       datos.push(selects.item(i).value);
     }
   }
+	*/
+
+	const productList = document.getElementsByClassName('product-list');
+
+	for (let i = 0; i < productList.length; i++){
+		const groupChildrenElements = productList[i].children;
+		const serviceId = groupChildrenElements[0].value;
+		const price = groupChildrenElements[1].value;
+		datos.push({
+			serviceId,
+			price
+		});
+	}
+	
+	console.log(datos);
+	validarServicesList(datos);
 
   if (usuario.value == '') {
     datos = [];
     Erro.set('usuario_group', 'Debes seleccionar un cliente');
   }
-
+	/*
   if (datos.length > 0) {
     let descripcion = document.getElementById('descripcion');
     let fechaEntrega = document.getElementById('fecha_entrega');
@@ -104,6 +140,7 @@ guardar.addEventListener('click', async () => {
   } else {
     Alerta.show('warning', 'No hay servicios para guardar.');
   }
+	*/
 });
 
 document.addEventListener('DOMContentLoaded', async () => {

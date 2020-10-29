@@ -56,9 +56,10 @@ class Servicios extends Controller
     $this->view->render($_SESSION['rol'] == 'user' ? 'user/servicios/solicitud/crear' : 'admin/servicios/solicitud/crear');
   }
 
+	/*
   public function crea_solicitud()
   {
-
+		//entra en mantenimiento
     $cliente = $_SESSION['rol'] == 'user' ? $_SESSION['id'] : $this->set_value($_POST['cliente']);
     $descripcion = $this->set_value($_POST['descripcion']);
     $fecha_entrega =  $_SESSION['rol'] == 'user' ? null : $this->set_value($_POST['fechaEntrega']);
@@ -73,7 +74,7 @@ class Servicios extends Controller
 
     if ($guardar == ['ok']) {
       foreach ($servicios as $servicio) {
-        $solicitud->agregar_servicio($servicio);
+        $solicitud->agregar_servicio ($servicio);
       }
       echo json_encode([
         'status' => 201
@@ -85,6 +86,7 @@ class Servicios extends Controller
       ]);
     }
   }
+	 */
 
   public function editar_solicitud($params = null)
   {
